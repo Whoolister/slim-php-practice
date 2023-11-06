@@ -2,13 +2,13 @@
 ==============================
 
 ## 📝 Introducción
-El principal objetivo de este repositorio es poder desplegar de forma automática nuestra aplicación PHP Slim Framework 4 en un servidor en la nube. En esta ocación vamos a utilizar la versión gratuita de Railway, que nos permite vincular nuestro repositorio de github con la plataforma, poder desplegar automáticamente nuesto código y quedar disponible en la web.
+El principal objetivo de este repositorio es poder desplegar de forma automática nuestra aplicación PHP Slim Framework 4 en un servidor en la nube. En esta ocasión vamos a utilizar la versión gratuita de Railway, que nos permite vincular nuestro repositorio de github con la plataforma, poder desplegar automáticamente nuestro código y quedar disponible en la web.
 
 ## 1⃣ Forkear proyecto
-Como primer paso, debemos hacer un fork de este proyecto desde el boton ubicado en la parte superior derecha de la pagina del repositorio.
+Como primer paso, debemos hacer un fork de este proyecto desde el botón ubicado en la parte superior derecha de la página del repositorio.
 
 ## 2⃣ Subimos nuestro código (opcional si agregan código)
-Una vez forkeado, clonamos el repo con `git clone <url del repo>` y agregamos nuestro codigo PHP (SLIM Framework).
+Una vez forkeado, clonamos el repo con `git clone <url del repo>` y agregamos nuestro código PHP (SLIM Framework).
 Luego comiteamos y pusheamos los cambios.
 
 ```sh
@@ -35,11 +35,11 @@ Una vez hecho esto, va a comenzar a clonar y desplegar nuestro repositorio en el
 
 ![Railway4](https://i.ibb.co/XxsR518/railway-4.png)
 
-Una vez que termine vamos a poder ir a la sección **Settings** y elegir la rama de github que queremos deplegar con nuestra aplicación, en nuestro caso `main`. De esta forma, cada vez que se haga una modificación a esta rama, Railway va actualizar automáticamente la aplicación.
+Una vez que termine vamos a poder ir a la sección **Settings** y elegir la rama de github que queremos desplegar con nuestra aplicación, en nuestro caso `main`. De esta forma, cada vez que se haga una modificación a esta rama, Railway va a actualizar automáticamente la aplicación.
 
 ![Railway5](https://i.ibb.co/CVk5fLR/railway-5.png)
 
-En esa misma sección podemos verificar si el depliegue se hizo con exito y la url para acceder en **Domains**. 
+En esa misma sección podemos verificar si el despliegue se hizo con éxito y la url para acceder en **Domains**. 
 
 https://slim-php-deployment-production.up.railway.app/
 
@@ -65,23 +65,23 @@ php composer-setup.php
 ```sh
 C:\xampp\htdocs\
 ```
-- Acceder por linea de comandos a la carpeta del proyecto y luego instalar Slim framework via Compose
+- Acceder por línea de comandos a la carpeta del proyecto y luego instalar Slim framework via Compose
 
 ```sh
 cd C:\xampp\htdocs\<ruta-del-repo-clonado>
 composer update
 ```
-- En el archivo index.php agregar la siguiente linea debajo de `AppFactory::create();`, deberán colocar los subniveles que existan hasta llegar al archivo index.php. Si colocamos el proyecto dentro de subcarpetas por ejemplo, dentro de la carpeta `app` :
+- En el archivo index.php agregar la siguiente línea debajo de `AppFactory::create();`, deberán colocar los subniveles que existan hasta llegar al archivo index.php. Sí colocamos el proyecto dentro de sub carpetas por ejemplo, dentro de la carpeta `app` :
 
 ```sh
 // Set base path
 $app->setBasePath('/app');
 ```
-- Abrir desde http://localhost/ ó http://localhost:8080/ (depende del puerto configurado en el panel del XAMPP)
+- Abrir desde http://localhost/ o http://localhost:8080/ (depende del puerto configurado en el panel del XAMPP)
 
 ## 📁 Correr localmente via PHP
 
-- Acceder por linea de comandos a la carpeta del proyecto y luego instalar Slim framework via Compose
+- Acceder por línea de comandos a la carpeta del proyecto y luego instalar Slim framework via Compose
 
 ```sh
 cd C:\<ruta-del-repo-clonado>
