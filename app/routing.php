@@ -6,7 +6,7 @@ use App\controllers\ProductController;
 use App\controllers\SurveyController;
 use App\controllers\TableController;
 use App\controllers\UserController;
-use App\Controllers\OrderController;
+use App\controllers\OrderController;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\App;
@@ -60,26 +60,10 @@ return function(App $app)
     });
 
     $app->get('[/]', function (Request $request, Response $response) {
-        $payload = json_encode(['method' => 'GET', 'msg' => 'Bienvenido a SlimFramework 2023']);
-        $response->getBody()->write($payload);
-        return $response->withHeader('Content-Type', 'application/json');
-    });
+        $response = $response->withHeader('Content-Type', 'application/json');
 
-    $app->get('/test', function (Request $request, Response $response) {
-        $payload = json_encode(['method' => 'GET', 'msg' => 'Bienvenido a SlimFramework 2023']);
-        $response->getBody()->write($payload);
-        return $response->withHeader('Content-Type', 'application/json');
-    });
-
-    $app->post('[/]', function (Request $request, Response $response) {
-        $payload = json_encode(['method' => 'POST', 'msg' => 'Bienvenido a SlimFramework 2023']);
-        $response->getBody()->write($payload);
-        return $response->withHeader('Content-Type', 'application/json');
-    });
-
-    $app->post('/test', function (Request $request, Response $response) {
-        $payload = json_encode(['method' => 'POST', 'msg' => 'Bienvenido a SlimFramework 2023']);
-        $response->getBody()->write($payload);
-        return $response->withHeader('Content-Type', 'application/json');
+        $response->getBody()->write(json_encode(['msg' => 'Bienvenido a La Parissiene!']));
+        
+        return $response->withStatus(200, 'OK');
     });
 };
