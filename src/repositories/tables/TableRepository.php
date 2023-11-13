@@ -2,23 +2,38 @@
 
 declare(strict_types=1);
 
-namespace App\repositories;
+namespace App\repositories\tables;
 
 use App\entities\tables\Table;
+use App\repositories\CrudRepository;
 use PDO;
 use function filter_var;
 use const FILTER_VALIDATE_BOOLEAN;
 
-readonly class TableRepository
+/**
+ * Repository for tables.
+ *
+ * @implements CrudRepository<Table, string>
+ */
+final readonly class TableRepository implements CrudRepository
 {
     public function __construct(private PDO $connection)
     {
     }
 
+    public function count(): int
+    {
+        if (($statement = $this->connection->query('SELECT COUNT(*) FROM tables')) === false) {
+            return 0;
+        }
+
+        return (int) $statement->fetchColumn();
+    }
+
     /**
      * @return Table[] All the tables in the database.
      */
-    public function GetAll(): array
+    public function getAll(): array
     {
         if (($statement = $this->connection->query('SELECT * FROM tables')) === false) {
             return [];
@@ -27,7 +42,7 @@ readonly class TableRepository
         $result = [];
 
         foreach ($statement->fetchAll(PDO::FETCH_ASSOC) as $row) {
-            $result[] = $this->Map($row);
+            $result[] = $this->map($row);
         }
 
         return $result;
@@ -39,7 +54,7 @@ readonly class TableRepository
      * @param string $id The ID of the table to get.
      * @return false|Table The table with the given ID, or false if it doesn't exist.
      */
-    public function GetById(string $id): false|Table
+    public function getById($id): false|Table
     {
         if (($statement = $this->connection->prepare('SELECT * FROM tables WHERE id = :id')) === false) {
             return false;
@@ -53,43 +68,47 @@ readonly class TableRepository
             return false;
         }
 
-        return $this->Map($table);
+        return $this->map($table);
     }
 
     /**
-     * Adds a table to the database.
+     * Checks whether a table with the given ID exists.
      *
-     * @param Table $entity The table to add.
-     * @return bool Whether the table was added successfully.
+     * @param string $id The ID of the table to check.
+     * @return bool Whether a table with the given ID exists.
      */
-    public function Add(Table $entity): bool
+    public function existsById($id): bool
     {
-        if (($statement = $this->connection->prepare('INSERT INTO tables (status) VALUES (:status)')) === false) {
+        if (($statement = $this->connection->prepare('SELECT COUNT(*) FROM tables WHERE id = :id')) === false) {
             return false;
         }
 
-        return $statement->execute([
-            'status' => $entity->status->value,
-        ]);
+        if ($statement->execute(['id' => $id]) === false) {
+            return false;
+        }
+
+        return (bool) $statement->fetchColumn();
     }
 
     /**
-     * Updates a table in the database.
+     * Saves a table to the database
      *
-     * @param Table $entity The table to update.
-     * @return bool Whether the table was updated successfully.
+     * @param Table $entity The table to save.
+     * @return false|Table The saved table, or false if it couldn't be saved.
      */
-    public function Update(Table $entity): bool
-    {
-        if (($statement = $this->connection->prepare('UPDATE tables SET status = :status, active = :active WHERE id = :id')) === false) {
+    public function save($entity): false|Table {
+        if (($statement = $this->connection->prepare('INSERT INTO tables (id, status, active) VALUES (:id, :status, :active) ON DUPLICATE KEY UPDATE status = :status, active = :active')) === false) {
             return false;
         }
 
-        return $statement->execute([
-            'status' => $entity->status,
-            'active' => $entity->active,
-            'id' => $entity->id
-        ]);
+        if ($statement->execute([
+            'id' => $entity->getId(),
+            'status' => $entity->getStatus(),
+        ])) {
+            return $entity;
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -98,13 +117,13 @@ readonly class TableRepository
      * @param string $id The ID of the table to delete.
      * @return bool Whether the table was deleted successfully.
      */
-    public function Delete(string $id): bool
+    public function deleteById($id): bool
     {
         if (($statement = $this->connection->prepare('UPDATE tables SET active = false WHERE id = :id')) === false) {
             return false;
         }
 
-        return $statement->execute(['id' => $id]);
+        return $statement->execute(['id' => $id]) && $statement->rowCount() !== 0;
     }
 
     /**
@@ -113,7 +132,7 @@ readonly class TableRepository
      * @param array{ status: string, active: bool, id: string } $row The table to create, in array form.
      * @return Table The table object.
      */
-    protected function Map(array $row): Table
+    protected function map(array $row): Table
     {
         return new Table(
             $row['status'],

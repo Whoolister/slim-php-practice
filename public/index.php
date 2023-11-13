@@ -29,14 +29,15 @@ $container = $containerBuilder->build();
 AppFactory::setContainer($container);
 $app = AppFactory::create();
 
-// Add error middleware
-$app->addErrorMiddleware(displayErrorDetails: true, logErrors: true, logErrorDetails: true);
+// Add routes
+$routing = require __DIR__ . '/../app/routing.php';
+$routing($app);
 
 // Add body parser
 $app->addBodyParsingMiddleware();
 
-// Add routes
-$routing = require __DIR__ . '/../app/routing.php';
-$routing($app);
+// Add error middleware
+$app->addErrorMiddleware(displayErrorDetails: true, logErrors: true, logErrorDetails: true);
+
 
 $app->run();

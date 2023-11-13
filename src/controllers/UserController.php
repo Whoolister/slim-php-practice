@@ -4,41 +4,41 @@ declare(strict_types=1);
 
 namespace App\controllers;
 
+use App\entities\users\User;
 use App\entities\users\UserRole;
 use App\services\UserService;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
-use Slim\Exception\HttpNotImplementedException;
-use const FILTER_NULL_ON_FAILURE;
 
-readonly class UserController
+final readonly class UserController
 {
+    private const ID_KEY = 'idUsuario';
+    private const FIRST_NAME_KEY = 'nombre';
+    private const LAST_NAME_KEY = 'apellido';
+    private const EMAIL_KEY = 'email';
+    private const PASSWORD_KEY = 'password';
+    private const ROLE_KEY = 'rol';
+
     public function __construct(private UserService $userService)
     {
     }
 
-    public function GetAll(Request $request, Response $response, array $args): Response
+    public function getAll(Request $request, Response $response, array $args): Response
     {
-        $response = $response->withHeader('Content-Type', 'application/json');
-
-        $response->getBody()->write(json_encode($this->userService->GetAll()));
+        $response->getBody()->write(json_encode($this->userService->getAll()));
 
         return $response->withStatus(200, 'OK');
     }
 
     public function GetOne(Request $request, Response $response, array $args): Response
     {
-        $response = $response->withHeader('Content-Type', 'application/json');
+        if (!isset($args[self::ID_KEY])) return $response->withStatus(400, 'Falta el ID');
 
-        if (($id = $args['id']) === null) {
-            return $response->withStatus(400, 'Falta el ID');
-        }
+        $id = $args[self::ID_KEY];
 
-        if (!is_numeric($id)) {
-            return $response->withStatus(400, 'El ID debe ser un número');
-        }
+        if (!is_numeric($id)) return $response->withStatus(400, 'El ID debe ser un número');
 
-        if (($user = $this->userService->GetById((int) $id)) === false) {
+        if (($user = $this->userService->getOne((int) $id)) === false) {
             return $response->withStatus(404, 'No se encontró el usuario');
         }
 
@@ -47,37 +47,25 @@ readonly class UserController
         return $response->withStatus(200, 'OK');
     }
 
-    public function Add(Request $request, Response $response, array $args): Response
+    public function add(Request $request, Response $response, array $args): Response
     {
-        $response = $response->withHeader('Content-Type', 'application/json');
-
         $body = $request->getParsedBody();
 
-        if (($firstName = $body['nombre']) === null) {
-            return $response->withStatus(400, 'Falta el nombre');
-        }
+        if (!isset($body[self::FIRST_NAME_KEY])) return $response->withStatus(400, 'Falta el nombre');
+        if (!isset($body[self::LAST_NAME_KEY])) return $response->withStatus(400, 'Falta el apellido');
+        if (!isset($body[self::EMAIL_KEY])) return $response->withStatus(400, 'Falta el email');
+        if (!isset($body[self::PASSWORD_KEY])) return $response->withStatus(400, 'Falta la contraseña');
+        if (!isset($body[self::ROLE_KEY])) return $response->withStatus(400, 'Falta el rol');
 
-        if (($lastName = $body['apellido']) === null) {
-            return $response->withStatus(400, 'Falta el apellido');
-        }
+        $firstName = $body[self::FIRST_NAME_KEY];
+        $lastName = $body[self::LAST_NAME_KEY];
+        $email = $body[self::EMAIL_KEY];
+        $password = $body[self::PASSWORD_KEY];
+        $role = UserRole::tryFrom($body[self::ROLE_KEY]);
 
-        if (($email = $body['email']) === null) {
-            return $response->withStatus(400, 'Falta el email');
-        }
+        if ($role === null) return $response->withStatus(400, 'Rol inválido');
 
-        if (($password = $body['password']) === null) {
-            return $response->withStatus(400, 'Falta la contraseña');
-        }
-
-        if (($role = $body['rol']) === null) {
-            return $response->withStatus(400, 'Falta el rol');
-        }
-
-        if (($role = UserRole::tryFrom($role)) === null) {
-            return $response->withStatus(400, 'Rol inválido');
-        }
-
-        if (($user = $this->userService->Add($firstName, $lastName, $email, $password, $role)) === false) {
+        if (($user = $this->userService->add(new User($firstName, $lastName, $email, $password, $role))) === false) {
             return $response->withStatus(500, 'No se pudo agregar el usuario');
         }
 
@@ -86,53 +74,31 @@ readonly class UserController
         return $response->withStatus(201, 'Creado');
     }
 
-    public function Update(Request $request, Response $response, array $args): Response
+    public function update(Request $request, Response $response, array $args): Response
     {
-        $response = $response->withHeader('Content-Type', 'application/json');
+        if (!isset($args[self::ID_KEY])) return $response->withStatus(400, 'Falta el ID');
 
-        if (($id = $args['id']) === null) {
-            return $response->withStatus(400, 'Falta el ID');
-        }
+        $id = $args[self::ID_KEY];
 
-        if (!is_numeric($id)) {
-            return $response->withStatus(400, 'El ID debe ser un número');
-        }
+        if (!is_numeric($id)) return $response->withStatus(400, 'El ID debe ser un número');
 
         $body = $request->getParsedBody();
 
-        if (($firstName = $body['nombre']) === null) {
-            return $response->withStatus(400, 'Falta el nombre');
-        }
+        if (!isset($body[self::FIRST_NAME_KEY])) return $response->withStatus(400, 'Falta el nombre');
+        if (!isset($body[self::LAST_NAME_KEY])) return $response->withStatus(400, 'Falta el apellido');
+        if (!isset($body[self::EMAIL_KEY])) return $response->withStatus(400, 'Falta el email');
+        if (!isset($body[self::PASSWORD_KEY])) return $response->withStatus(400, 'Falta la contraseña');
+        if (!isset($body[self::ROLE_KEY])) return $response->withStatus(400, 'Falta el rol');
 
-        if (($lastName = $body['apellido']) === null) {
-            return $response->withStatus(400, 'Falta el apellido');
-        }
+        $firstName = $body[self::FIRST_NAME_KEY];
+        $lastName = $body[self::LAST_NAME_KEY];
+        $email = $body[self::EMAIL_KEY];
+        $password = $body[self::PASSWORD_KEY];
+        $role = UserRole::tryFrom($body[self::ROLE_KEY]);
 
-        if (($email = $body['email']) === null) {
-            return $response->withStatus(400, 'Falta el email');
-        }
+        if ($role === null) return $response->withStatus(400, 'Rol inválido');
 
-        if (($password = $body['password']) === null) {
-            return $response->withStatus(400, 'Falta la contraseña');
-        }
-
-        if (($role = $body['rol']) === null) {
-            return $response->withStatus(400, 'Falta el rol');
-        }
-
-        if (($role = UserRole::tryFrom($role)) === null) {
-            return $response->withStatus(400, 'Rol inválido');
-        }
-
-        if (($active = $body['activo']) === null) {
-            return $response->withStatus(400, 'Falta el estado');
-        }
-
-        if (($active = filter_var($active, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE)) === null) {
-            return $response->withStatus(400, 'Estado inválido');
-        }
-
-        if (($user = $this->userService->Update((int) $id, $firstName, $lastName, $email, $password, $role, $active)) === false) {
+        if (($user = $this->userService->update(new User($firstName, $lastName, $email, $password, $role, id: (int) $id))) === false) {
             return $response->withStatus(500, 'No se pudo actualizar el usuario');
         }
 
@@ -141,19 +107,15 @@ readonly class UserController
         return $response->withStatus(200, 'OK');
     }
 
-    public function Delete(Request $request, Response $response, array $args): Response
+    public function delete(Request $request, Response $response, array $args): Response
     {
-        $response = $response->withHeader('Content-Type', 'application/json');
+        if (!isset($args[self::ID_KEY])) return $response->withStatus(400, 'Falta el ID');
 
-        if (($id = $args['id']) === null) {
-            return $response->withStatus(400, 'Falta el ID');
-        }
+        $id = $args[self::ID_KEY];
 
-        if (!is_numeric($id)) {
-            return $response->withStatus(400, 'El ID debe ser un número');
-        }
+        if (!is_numeric($id)) return $response->withStatus(400, 'El ID debe ser un número');
 
-        if (($user = $this->userService->Delete((int) $id)) === false) {
+        if (($user = $this->userService->delete((int) $id)) === false) {
             return $response->withStatus(500, 'No se pudo eliminar el usuario');
         }
 

@@ -22,9 +22,14 @@ enum UserRole: string
     case BREWER = 'CERVECERO';
 
     /**
-     * User in charge of preparing meals or pastries
+     * User in charge of preparing meals
      */
     case CHEF = 'COCINERO';
+
+    /**
+     * User in charge of preparing pastries
+     */
+    case BAKER = 'PASTELERO';
 
     /**
      * User in charge of taking and delivering orders

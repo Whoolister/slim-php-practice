@@ -4,17 +4,22 @@ declare(strict_types=1);
 
 namespace App\controllers;
 
+use App\entities\products\Product;
 use App\entities\products\ProductType;
 use App\services\ProductService;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
-use function filter_var;
 use function is_numeric;
 use function json_encode;
-use const FILTER_NULL_ON_FAILURE;
 
-readonly class ProductController
+final readonly class ProductController
 {
+    private const ID_KEY = 'idProducto';
+    private const NAME_KEY = 'nombre';
+    private const PRICE_KEY = 'precio';
+    private const ESTIMATED_TIME_KEY = 'tiempo_estimado';
+    private const TYPE_KEY = 'tipo';
+
     /**
      * Constructs a Product Controller
      *
@@ -24,20 +29,16 @@ readonly class ProductController
     {
     }
 
-    public function GetAll(Request $request, Response $response, array $args): Response
+    public function getAll(Request $request, Response $response, array $args): Response
     {
-        $response = $response->withHeader('Content-Type', 'application/json');
-
-        $response->getBody()->write(json_encode($this->productService->GetAll()));
+        $response->getBody()->write(json_encode($this->productService->getAll()));
 
         return $response->withStatus(200, 'OK');
     }
 
     public function GetOne(Request $request, Response $response, array $args): Response
     {
-        $response = $response->withHeader('Content-Type', 'application/json');
-
-        if (($id = $args['id']) === null) {
+        if (($id = $args[self::ID_KEY]) === null) {
             return $response->withStatus(400, 'Falta el ID');
         }
 
@@ -45,7 +46,7 @@ readonly class ProductController
             return $response->withStatus(400, 'El ID debe ser un número');
         }
 
-        if (($product = $this->productService->GetById((int) $id)) === false) {
+        if (($product = $this->productService->GetOne((int) $id)) === false) {
             return $response->withStatus(404, 'No se encontró el producto');
         }
 
@@ -54,17 +55,15 @@ readonly class ProductController
         return $response->withStatus(200, 'OK');
     }
 
-    public function Add(Request $request, Response $response, array $args): Response
+    public function add(Request $request, Response $response, array $args): Response
     {
-        $response = $response->withHeader('Content-Type', 'application/json');
-
         $body = $request->getParsedBody();
 
-        if (($name = $body['nombre']) === null) {
+        if (($name = $body[self::NAME_KEY]) === null) {
             return $response->withStatus(400, 'Falta el nombre');
         }
 
-        if (($price = $body['precio']) === null) {
+        if (($price = $body[self::PRICE_KEY]) === null) {
             return $response->withStatus(400, 'Falta el precio');
         }
 
@@ -72,7 +71,7 @@ readonly class ProductController
             return $response->withStatus(400, 'El ID debe ser un número');
         }
 
-        if (($estimatedTime = $body['tiempo_estimado']) === null) {
+        if (($estimatedTime = $body[self::ESTIMATED_TIME_KEY]) === null) {
             return $response->withStatus(400, 'Falta el tiempo estimado de preparación');
         }
 
@@ -80,7 +79,7 @@ readonly class ProductController
             return $response->withStatus(400, 'El tiempo estimado de preparación debe ser un número');
         }
 
-        if (($type = $body['tipo']) === null) {
+        if (($type = $body[self::TYPE_KEY]) === null) {
             return $response->withStatus(400, 'Falta el tipo');
         }
 
@@ -88,7 +87,7 @@ readonly class ProductController
             return $response->withStatus(400, 'El tipo no es válido');
         }
 
-        if (($result = $this->productService->Add($name, (int) $price, (int) $estimatedTime, $type)) === false) {
+        if (($result = $this->productService->add(new Product($name, (int) $price, (int) $estimatedTime, $type))) === false) {
             return $response->withStatus(500, 'No se pudo agregar el producto');
         }
 
@@ -97,11 +96,11 @@ readonly class ProductController
         return $response->withStatus(201, 'Creado');
     }
 
-    public function Update(Request $request, Response $response, array $args): Response
+    public function update(Request $request, Response $response, array $args): Response
     {
-        $response = $response->withHeader('Content-Type', 'application/json');
+        $body = $request->getParsedBody();
 
-        if (($id = $args['id']) === null) {
+        if (($id = $args[self::ID_KEY]) === null) {
             return $response->withStatus(400, 'Falta el ID');
         }
 
@@ -109,13 +108,11 @@ readonly class ProductController
             return $response->withStatus(400, 'El ID debe ser un número');
         }
 
-        $body = $request->getParsedBody();
-
-        if (($name = $body['nombre']) === null) {
+        if (($name = $body[self::NAME_KEY]) === null) {
             return $response->withStatus(400, 'Falta el nombre');
         }
 
-        if (($price = $body['precio']) === null) {
+        if (($price = $body[self::PRICE_KEY]) === null) {
             return $response->withStatus(400, 'Falta el precio');
         }
 
@@ -123,7 +120,7 @@ readonly class ProductController
             return $response->withStatus(400, 'El ID debe ser un número');
         }
 
-        if (($estimatedTime = $body['tiempo_estimado']) === null) {
+        if (($estimatedTime = $body[self::ESTIMATED_TIME_KEY]) === null) {
             return $response->withStatus(400, 'Falta el tiempo estimado de preparación');
         }
 
@@ -131,7 +128,7 @@ readonly class ProductController
             return $response->withStatus(400, 'El tiempo estimado de preparación debe ser un número');
         }
 
-        if (($type = $body['tipo']) === null) {
+        if (($type = $body[self::TYPE_KEY]) === null) {
             return $response->withStatus(400, 'Falta el tipo');
         }
 
@@ -139,15 +136,7 @@ readonly class ProductController
             return $response->withStatus(400, 'El tipo no es válido');
         }
 
-        if (($active = $body['activo']) === null) {
-            return $response->withStatus(400, 'Falta el estado');
-        }
-
-        if (($active = filter_var($active, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE)) === null) {
-            return $response->withStatus(400, 'El estado no es válido');
-        }
-
-        if (($result = $this->productService->Update((int) $id, $name, (float) $price, (int) $estimatedTime, $type, $active)) === false) {
+        if (($result = $this->productService->update(new Product($name, (float) $price, (int) $estimatedTime, $type, id: (int) $id))) === false) {
             return $response->withStatus(500, 'No se pudo actualizar el producto');
         }
 
@@ -155,11 +144,9 @@ readonly class ProductController
         return $response->withStatus(200, 'OK');
     }
 
-    public function Delete(Request $request, Response $response, array $args): Response
+    public function delete(Request $request, Response $response, array $args): Response
     {
-        $response = $response->withHeader('Content-Type', 'application/json');
-
-        if (($id = $args['id']) === null) {
+        if (($id = $args[self::ID_KEY]) === null) {
             return $response->withStatus(400, 'Falta el ID');
         }
 
@@ -167,7 +154,7 @@ readonly class ProductController
             return $response->withStatus(400, 'El ID debe ser un número');
         }
 
-        if ($this->productService->Delete((int) $id) === false) {
+        if ($this->productService->delete((int) $id) === false) {
             return $response->withStatus(500, 'No se pudo eliminar el producto');
         }
 

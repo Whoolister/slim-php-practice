@@ -6,9 +6,9 @@ namespace App\services;
 
 use App\entities\products\Product;
 use App\entities\products\ProductType;
-use App\repositories\ProductRepository;
+use App\repositories\products\ProductRepository;
 
-readonly class ProductService
+final readonly class ProductService
 {
     /**
      * Constructs a Product Service.
@@ -22,9 +22,9 @@ readonly class ProductService
     /**
      * @return Product[] All the products currently persisted.
      */
-    public function GetAll(): array
+    public function getAll(): array
     {
-        return $this->productRepository->GetAll();
+        return $this->productRepository->getAll();
     }
 
     /**
@@ -33,43 +33,39 @@ readonly class ProductService
      * @param int $id The ID of the product to get.
      * @return false|Product The product with the given ID, or false if it doesn't exist.
      */
-    public function GetById(int $id): false|Product
+    public function GetOne(int $id): false|Product
     {
-        return $this->productRepository->GetById($id);
+        return $this->productRepository->getById($id);
     }
 
     /**
      * Persists a product.
      *
-     * @param string $name The name of the product.
-     * @param float $price The price of the product.
-     * @param int $estimatedTime The estimated time in minutes.
-     * @param ProductType $type The type of the product.
+     * @param Product $product The product to persist.
      * @return false|Product The created product, or false if it couldn't be created.
      */
-    public function Add(string $name, float $price, int $estimatedTime, ProductType $type): false|Product
+    public function add(Product $product): false|Product
     {
-        $product = new Product($name, $price, $estimatedTime, $type);
+        if ($product->getId() !== null) {
+            return false;
+        }
 
-        return $this->productRepository->Add($product) ? $product : false;
+        return $this->productRepository->save($product);
     }
 
     /**
      * Updates a product.
      *
-     * @param int $id The ID of the product to update.
-     * @param string $name The new name of the product.
-     * @param float $price The new price of the product.
-     * @param int $estimatedTime The new estimated time in seconds.
-     * @param ProductType $type The new type of the product.
-     * @param bool $active Whether the product is active.
+     * @param Product $product The product to update.
      * @return false|Product The updated product, or false if it couldn't be updated.
      */
-    public function Update(int $id, string $name, float $price, int $estimatedTime, ProductType $type, bool $active): false|Product
+    public function update(Product $product): false|Product
     {
-        $product = new Product($name, $price, $estimatedTime, $type, $active, $id);
+        if (!$this->productRepository->existsById($product->getId())) {
+            return false;
+        }
 
-        return $this->productRepository->Update($product) ? $product : false;
+        return $this->productRepository->save($product);
     }
 
     /**
@@ -78,8 +74,8 @@ readonly class ProductService
      * @param int $id The ID of the product to delete.
      * @return bool Whether the product was deleted successfully.
      */
-    public function Delete(int $id): bool
+    public function delete(int $id): bool
     {
-        return $this->productRepository->Delete($id);
+        return $this->productRepository->deleteById($id);
     }
 }

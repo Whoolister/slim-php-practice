@@ -6,9 +6,9 @@ namespace App\services;
 
 use App\entities\tables\Table;
 use App\entities\tables\TableStatus;
-use App\repositories\TableRepository;
+use App\repositories\tables\TableRepository;
 
-readonly class TableService
+final readonly class TableService
 {
     /**
      * Constructs a Table Service.
@@ -22,9 +22,9 @@ readonly class TableService
     /**
      * @return Table[] All the tables currently persisted.
      */
-    public function GetAll(): array
+    public function getAll(): array
     {
-        return $this->tableRepository->GetAll();
+        return $this->tableRepository->getAll();
     }
 
     /**
@@ -33,36 +33,39 @@ readonly class TableService
      * @param string $id The ID of the table to get.
      * @return false|Table The table with the given ID, or false if it couldn't be found.
      */
-    public function GetById(string $id): false|Table
+    public function getOne(string $id): false|Table
     {
-        return $this->tableRepository->GetById($id);
+        return $this->tableRepository->getById($id);
     }
 
     /**
      * Persists a Table.
      *
-     * @param TableStatus $status The status of the table.
+     * @param Table $table The table to persist.
      * @return false|Table The created table, or false if it couldn't be created.
      */
-    public function Add(TableStatus $status): false|Table
+    public function add(Table $table): false|Table
     {
-        $table = new Table($status);
+        if ($table->getId() !== null) {
+            return false;
+        }
 
-        return $this->tableRepository->Add($table) ? $table : false;
+        return $this->tableRepository->save($table);
     }
 
     /**
      * Updates a table.
      *
-     * @param string $id The ID of the table to update.
-     * @param TableStatus $status The new status of the table.
+     * @param Table $table The table to update.
      * @return false|Table The updated table, or false if it couldn't be updated.
      */
-    public function Update(string $id, TableStatus $status, bool $active): false|Table
+    public function update(Table $table): false|Table
     {
-        $table = new Table($status, $active, $id);
+        if (!$this->tableRepository->existsById($table->getId())) {
+            return false;
+        }
 
-        return $this->tableRepository->Update($table) ? $table : false;
+        return $this->tableRepository->save($table);
     }
 
     /**
@@ -71,8 +74,8 @@ readonly class TableService
      * @param string $id The ID of the table to delete.
      * @return bool Whether the table was deleted successfully.
      */
-    public function Delete(string $id): bool
+    public function delete(string $id): bool
     {
-        return $this->tableRepository->Delete($id);
+        return $this->tableRepository->deleteById($id);
     }
 }

@@ -13,4 +13,5 @@ return function (Dotenv $env) {
     $env->load();
     $env->required(['DB_HOST', 'DB_NAME', 'DB_USERNAME'])->notEmpty();
     $env->ifPresent('DB_PASSWORD')->notEmpty();
+    $env->ifPresent('DEVELOPMENT_MODE')->isBoolean();
 };

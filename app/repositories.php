@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-use App\repositories\OrderRepository;
-use App\repositories\ProductRepository;
-use App\repositories\SurveyRepository;
-use App\repositories\TableRepository;
-use App\repositories\UserRepository;
+use App\repositories\orders\OrderRepository;
+use App\repositories\orders\SurveyRepository;
+use App\repositories\products\ProductRepository;
+use App\repositories\tables\TableRepository;
+use App\repositories\users\UserRepository;
 use DI\ContainerBuilder;
-use Psr\Container\ContainerInterface;
+use function DI\autowire;
 
 /**
  * Sets the repositories and database connections to the DI Container
@@ -23,13 +23,13 @@ return function (ContainerBuilder $containerBuilder) {
                 username: $_ENV['DB_USERNAME'],
                 password: $_ENV['DB_PASSWORD'] ?? null
             );
-            $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $connection->setAttribute(PDO::ATTR_ERRMODE, $_ENV['DEVELOPMENT_MODE'] ? PDO::ERRMODE_EXCEPTION : PDO::ERRMODE_SILENT);
             return $connection;
         },
-        OrderRepository::class => fn (ContainerInterface $container) => new OrderRepository($container->get(PDO::class)),
-        ProductRepository::class => fn (ContainerInterface $container) => new ProductRepository($container->get(PDO::class)),
-        SurveyRepository::class => fn (ContainerInterface $container) => new SurveyRepository($container->get(PDO::class)),
-        TableRepository::class => fn (ContainerInterface $container) => new TableRepository($container->get(PDO::class)),
-        UserRepository::class => fn (ContainerInterface $container) => new UserRepository($container->get(PDO::class)),
+        OrderRepository::class => autowire(),
+        ProductRepository::class => autowire(),
+        SurveyRepository::class => autowire(),
+        TableRepository::class => autowire(),
+        UserRepository::class => autowire(),
     ]);
 };
