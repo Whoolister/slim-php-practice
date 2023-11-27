@@ -1,0 +1,63 @@
+nombre,precio,tiempoEstimado,tipo,activo
+Asado,400.5,60,PLATILLO,1
+Empanadas,20,30,PLATILLO,1
+Choripán,50.75,15,PLATILLO,1
+Provoleta,100.25,20,PLATILLO,1
+Locro,300,120,PLATILLO,1
+Puchero,350,180,PLATILLO,1
+"Milanesa a Caballo",200.5,45,PLATILLO,1
+Carbonada,250,90,PLATILLO,1
+Alfajores,15,10,POSTRE,1
+"Churros con dulce de leche",25,15,POSTRE,1
+Pastelitos,30,20,POSTRE,1
+"Budín de pan",40,30,POSTRE,1
+"Flan con dulce de leche",35,25,POSTRE,1
+Helado,45,5,POSTRE,1
+Malbec,200,1000,"TRAGO O VINO",1
+Torrontés,180,50,"TRAGO O VINO",1
+"Cabernet Sauvignon",190,33,"TRAGO O VINO",1
+"Hamburguesa de Garbanzo",500,300,PLATILLO,1
+"Cerveza Quilmes",70,15,CERVEZA,1
+"Cerveza Patagonia",85,23,CERVEZA,1
+"Cerveza Salta",80,10,CERVEZA,1
+"Cerveza Andes",75,11,CERVEZA,1
+Sorrentinos,150,30,PLATILLO,1
+Ravioles,140,35,PLATILLO,1
+Ñoquis,120,20,PLATILLO,1
+Spaghettis,110,25,PLATILLO,1
+Tallarines,100,30,PLATILLO,1
+Pionono,80,45,POSTRE,1
+Tiramisú,90,50,POSTRE,1
+Medialunas,10,10,POSTRE,1
+Chocotorta,95,40,POSTRE,1
+"Torta Galesa",80,60,POSTRE,1
+"Cerveza Corona",75,15,CERVEZA,1
+"Cerveza Isenbeck",65,30,CERVEZA,1
+"Cerveza Schneider",70,30,CERVEZA,1
+"Cerveza Iguana",85,30,CERVEZA,1
+"Cerveza Otro Mundo",90,20,CERVEZA,1
+Bonarda,195,80,"TRAGO O VINO",1
+Daikiri,255.5,70,"TRAGO O VINO",1
+Tempranillo,205,120,"TRAGO O VINO",1
+Chardonnay,220,93,"TRAGO O VINO",1
+"Pinot Noir",210,800,"TRAGO O VINO",1
+Merlot,200,70,"TRAGO O VINO",1
+"Fideos con tuco",130,45,PLATILLO,1
+"Fideos con pesto",140,50,PLATILLO,1
+"Fideos con salsa blanca",150,55,PLATILLO,1
+"Fideos con bolognesa",160,60,PLATILLO,1
+"Fideos con salsa rosa",170,65,PLATILLO,1
+"Postre balcarce",85,35,POSTRE,1
+Rogel,90,40,POSTRE,1
+"Crumble de manzana",95,45,POSTRE,1
+"Volcán de chocolate",100,50,POSTRE,1
+"Lemon pie",105,55,POSTRE,1
+"Cerveza Antares",95,13,CERVEZA,1
+"Cerveza Bieckert",100,20,CERVEZA,1
+"Cerveza Warsteiner",105,30,CERVEZA,1
+"Cerveza Brahma",110,14,CERVEZA,1
+"Cerveza Kunstmann",115,90,CERVEZA,1
+"Pinot Grigio",215,15,"TRAGO O VINO",1
+"Chenin Blanc",210,10,"TRAGO O VINO",1
+Tannat,220,10,"TRAGO O VINO",1
+"Sauvignon Blanc",220,20,"TRAGO O VINO",1
