@@ -11,6 +11,7 @@ use App\domain\products\ProductType;
 use Exception;
 use Psr\Http\Message\UploadedFileInterface;
 use function array_shift;
+use function count;
 use function explode;
 use function fclose;
 use function fopen;
@@ -132,13 +133,16 @@ class ProductService
             foreach ($csv as $row) {
                 $elements = count($row);
 
+                if ($elements === 1) {
+                    break;
+                }
+
                 $product = new Product(
                     name: $row[0],
                     price: (float) $row[1],
                     estimatedTime: (int) $row[2],
                     type: ProductType::tryFrom($row[3]),
-                    active: !($elements === 6) || $row[4],
-                    id: $elements === 6 ? (int) $row[5] : (int) $row[4]
+                    active: !($elements === 5) || $row[4],
                 );
 
                 $products[] = $product;
