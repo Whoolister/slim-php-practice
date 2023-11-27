@@ -2,19 +2,20 @@
 
 declare(strict_types=1);
 
-use App\controllers\OrderController;
-use App\controllers\OrderItemController;
-use App\controllers\ProductController;
-use App\controllers\SurveyController;
-use App\controllers\TableController;
-use App\controllers\UserController;
-use App\entities\users\UserRole;
-use App\middlewares\auth\AuthenticationMiddleware;
-use App\middlewares\auth\AuthorizationMiddleware;
-use App\middlewares\JsonContentMiddleware;
-use Psr\Http\Message\ResponseInterface as Response;
-use Psr\Http\Message\ServerRequestInterface as Request;
+use App\application\controllers\LoginController;
+use App\application\controllers\OrderController;
+use App\application\controllers\OrderingController;
+use App\application\controllers\OrderItemController;
+use App\application\controllers\ProductController;
+use App\application\controllers\SurveyController;
+use App\application\controllers\TableController;
+use App\application\controllers\UserController;
+use App\application\middlewares\auth\AuthenticationMiddleware;
+use App\application\middlewares\auth\AuthorizationMiddleware;
+use App\application\middlewares\DomainExceptionMiddleware;
+use App\application\middlewares\JsonContentMiddleware;
 use Slim\App;
+use Slim\Handlers\Strategies\RequestResponseArgs;
 use Slim\Routing\RouteCollectorProxy;
 
 /**
@@ -27,81 +28,92 @@ return function(App $app): void
     /* Content-Type Middleware */
     $app->add(JsonContentMiddleware::class);
 
-    /* Authentication Middleware */
-    $app->add(AuthenticationMiddleware::class);
+    /* Domain Exception Middleware */
+    $app->add(DomainExceptionMiddleware::class);
 
-    /* Authorization Middleware */
-    $authorizeWaiters = new AuthorizationMiddleware([UserRole::WAITER]);
-
-    /* Routing Groups */
-    $surveyRouting = function (RouteCollectorProxy $group) {
-        $group->get('[/]',SurveyController::class . ':getAll');
-        $group->get('/{idEncuesta:[\d]+}',SurveyController::class . ':getOne');
-        $group->post('[/]',SurveyController::class . ':add');
-        $group->put('/{idEncuesta:[\d]+}',SurveyController::class . ':update');
-        $group->delete('/{idEncuesta:[\d]+}',SurveyController::class . ':delete');
-    };
-
-    $orderItemRouting = function (RouteCollectorProxy $group) {
-        $group->get('[/]',OrderItemController::class . ':getAll');
-        $group->get('/{idItemPedido:[\d]+}',OrderItemController::class . ':getOne');
-        $group->post('[/]',OrderItemController::class . ':add');
-        $group->put('/{idItemPedido:[\d]+}',OrderItemController::class . ':update');
-        $group->delete('/{idItemPedido:[\d]+}',OrderItemController::class . ':delete');
-    };
-
-    $orderRouting = function (RouteCollectorProxy $group) use ($orderItemRouting, $surveyRouting) {
-        $group->get('[/]',OrderController::class . ':getAll');
-        $group->get('/{idPedido:[\d]+}',OrderController::class . ':getOne');
-        $group->post('[/]',OrderController::class . ':add');
-        $group->put('/{idPedido:[\d]+}',OrderController::class . ':update');
-        $group->delete('/{idPedido:[\d]+}',OrderController::class . ':delete');
-
-        $group->group('/{idPedido:[\d]+}/encuestas', $surveyRouting);
-
-        $group->group('/{idPedido:[\d]+}/items', $orderItemRouting);
-    };
+    /* Set Default Invocation Strategy */
+    $app->getRouteCollector()->setDefaultInvocationStrategy(new RequestResponseArgs());
 
     /* Routes */
+    $app->post('/login', LoginController::class . ':login');
+
     $app->group('/usuarios', function (RouteCollectorProxy $group) {
         $group->get('[/]', UserController::class . ':getAll');
-        $group->get('/{idUsuario:[\d]+}', UserController::class . ':getOne');
-        $group->post('[/]', UserController::class . ':add');
-        $group->put('/{idUsuario:[\d]+}', UserController::class . ':update');
-        $group->delete('/{idUsuario:[\d]+}', UserController::class . ':delete');
-    })->add(AuthorizationMiddleware::class);
+        $group->get('/{id}', UserController::class . ':getById');
+        $group->post('[/]', UserController::class . ':create');
+        $group->put('/{id}', UserController::class . ':update');
+        $group->delete('/{id}', UserController::class . ':delete');
+    })->add(AuthorizationMiddleware::class . ':asPartner')->add(AuthenticationMiddleware::class);
 
     $app->group('/productos', function (RouteCollectorProxy $group) {
         $group->get('[/]',ProductController::class . ':getAll');
-        $group->get('/{idProducto:[\d]+}',ProductController::class . ':getOne');
-        $group->post('[/]',ProductController::class . ':add');
-        $group->put('/{idProducto:[\d]+}',ProductController::class . ':update');
-        $group->delete('/{idProducto:[\d]+}',ProductController::class . ':delete');
+        $group->get('/{id:[\d]+}',ProductController::class . ':getById');
+
+        $group->post('[/]',ProductController::class . ':create')
+            ->add(AuthorizationMiddleware::class . ':asKitchenStaff')->add(AuthenticationMiddleware::class);
+        $group->put('/{id}',ProductController::class . ':update')
+            ->add(AuthorizationMiddleware::class . ':asKitchenStaff')->add(AuthenticationMiddleware::class);
+        $group->delete('/{id}',ProductController::class . ':delete')
+            ->add(AuthorizationMiddleware::class . ':asKitchenStaff')->add(AuthenticationMiddleware::class);
+
+        $group->get('/csv',ProductController::class . ':getAsCsv');
+        $group->post('/csv',ProductController::class . ':addAsCsv')
+            ->add(AuthorizationMiddleware::class . ':asKitchenStaff')->add(AuthenticationMiddleware::class);
     });
 
-    $app->group('/mesas', function (RouteCollectorProxy $group) use ($authorizeWaiters, $orderRouting) {
+    $app->group('/mesas', function (RouteCollectorProxy $group) {
         $group->get('[/]',TableController::class . ':getAll');
-        $group->get('/{idMesa:[\d\w]+}',TableController::class . ':getOne');
-        $group->post('[/]',TableController::class . ':add')
-            ->add(AuthorizationMiddleware::class);
-        $group->put('/{idMesa:[\d\w]+}',TableController::class . ':update')
-            ->addMiddleware($authorizeWaiters);
-        $group->delete('/{idMesa:[\d\w]+}',TableController::class . ':delete')
-            ->add(AuthorizationMiddleware::class);
+        $group->get('/popular',TableController::class . ':getMostPopular');
+        $group->get('/{id}',TableController::class . ':getById');
 
-        $group->group('/{idMesa:[\d\w]+}/pedidos', $orderRouting)->addMiddleware($authorizeWaiters);
+        $group->post('[/]',TableController::class . ':create')
+            ->add(AuthorizationMiddleware::class . ':asPartner')->add(AuthenticationMiddleware::class);
+
+        $group->post('/{id}/pedir',OrderingController::class . ':order')
+            ->add(AuthorizationMiddleware::class . ':asWaiter')->add(AuthenticationMiddleware::class);
+        $group->post('/{id}/foto',OrderingController::class . ':takePicture')
+            ->add(AuthorizationMiddleware::class . ':asWaiter')->add(AuthenticationMiddleware::class);
+        $group->post('/{id}/servir',OrderingController::class . ':serve')
+            ->add(AuthorizationMiddleware::class . ':asWaiter')->add(AuthenticationMiddleware::class);
+        $group->post('/{id}/cobrar',OrderingController::class . ':charge')
+            ->add(AuthorizationMiddleware::class . ':asWaiter')->add(AuthenticationMiddleware::class);
+        $group->post('/{id}/cerrar',OrderingController::class . ':close')
+            ->add(AuthorizationMiddleware::class . ':asPartner')->add(AuthenticationMiddleware::class);
+
+        $group->get('/{id}/pedidos/{orderId}', OrderingController::class . ':getPendingTime');
+        $group->post('/{id}/pedidos/{orderId}/encuesta',SurveyController::class . ':create');
+
+        $group->delete('/{id}',TableController::class . ':delete')
+            ->add(AuthorizationMiddleware::class . ':asPartner')->add(AuthenticationMiddleware::class);
     });
 
-    $app->group('/pedidos', $orderRouting)->addMiddleware($authorizeWaiters);
+    $app->group('/pedidos', function (RouteCollectorProxy $group) {
+        $group->get('[/]',OrderController::class . ':getAll');
 
-    $app->group('/items', $orderItemRouting);
+        $group->get('/pendientes',OrderingController::class . ':getAllPending');
+        $group->get('/listos',OrderingController::class . ':getAllReady');
 
-    $app->group('/encuestas', $surveyRouting);
+        $group->get('/{id}',OrderController::class . ':getById');
+        $group->delete('/{id}',OrderController::class . ':delete');
+    })->add(AuthorizationMiddleware::class . ':asWaiter')->add(AuthenticationMiddleware::class);
 
+    $app->group('/items', function (RouteCollectorProxy $group) {
+        $group->get('[/]',OrderItemController::class . ':getAll');
+        $group->get('/pendientes',OrderItemController::class . ':getAllPending');
+        $group->get('/{id}',OrderItemController::class . ':getById');
 
-    $app->get('[/]', function (Request $request, Response $response) {
-        $response->getBody()->write(json_encode(['msg' => 'Bienvenido a La Comanda!']));
+        $group->post('/{id}/preparar',OrderingController::class . ':startPreparation');
+        $group->post('/{id}/terminar',OrderingController::class . ':finishPreparation');
 
-        return $response->withStatus(200, 'OK');
+        $group->delete('/{id}',OrderItemController::class . ':delete');
+    })->add(AuthorizationMiddleware::class . ':asKitchenStaff')->add(AuthenticationMiddleware::class);
+
+    $app->group('/encuestas', function (RouteCollectorProxy $group) {
+        $group->get('[/]',SurveyController::class . ':getAll');
+        $group->get('/{id}',SurveyController::class . ':getById');
+        $group->post('[/]',SurveyController::class . ':create');
+        $group->put('/{id}',SurveyController::class . ':update');
+        $group->delete('/{id}',SurveyController::class . ':delete')
+            ->add(AuthorizationMiddleware::class . ':asPartner')->add(AuthenticationMiddleware::class);
     });
 };

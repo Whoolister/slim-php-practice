@@ -5,6 +5,7 @@
         "slim/psr7": "^1.",
         "vlucas/phpdotenv": "^5.",
         "php-di/php-di": "^6.4.",
+        "firebase/php-jwt": "^6.",
         "ext-json": "*",
         "ext-pdo": "*"
     },

@@ -36,8 +36,14 @@ $routing($app);
 // Add body parser
 $app->addBodyParsingMiddleware();
 
-// Add error middleware
-$app->addErrorMiddleware(displayErrorDetails: true, logErrors: true, logErrorDetails: true);
+// Set default Timezone
+date_default_timezone_set('America/Argentina/Buenos_Aires');
 
+// Add error middleware
+$app->addErrorMiddleware(
+    displayErrorDetails: true,
+    logErrors: true,
+    logErrorDetails: true
+);
 
 $app->run();

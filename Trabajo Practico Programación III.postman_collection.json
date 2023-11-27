@@ -1,0 +1,4984 @@
+{
+	"info": {
+		"_postman_id": "6c06f9e1-f022-498d-8f59-8aa177018ea3",
+		"name": "Trabajo Practico Programación III",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "23047342"
+	},
+	"item": [
+		{
+			"name": "Login",
+			"item": [
+				{
+					"name": "Log In",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Pedido Exitoso\", function () {\r",
+									"    pm.expect(pm.response.code).to.be.oneOf([200, 201, 202]);\r",
+									"});\r",
+									"\r",
+									"const json = pm.response.json()\r",
+									"\r",
+									"const token = json.token\r",
+									"\r",
+									"if (token !== null && token !== undefined) {\r",
+									"    pm.collectionVariables.set(\"JWT\", token);\r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "email",
+									"value": "{{JOHN_DOE_EMAIL}}",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "{{JOHN_DOE_PASSWORD}}",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:666/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "666",
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "Create",
+					"item": [
+						{
+							"name": "Add",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Pedido Exitoso\", function () {\r",
+											"    pm.expect(pm.response.code).to.be.oneOf([200, 201, 202]);\r",
+											"});\r",
+											"\r",
+											"const json = pm.response.json()\r",
+											"\r",
+											"const user = json.usuario\r",
+											"\r",
+											"const LAST_USER_ID = user.id;\r",
+											"\r",
+											"if (LAST_USER_ID !== null && LAST_USER_ID !== undefined) {\r",
+											"    pm.collectionVariables.set(\"LAST_USER_ID\", LAST_USER_ID);\r",
+											"}\r",
+											"\r",
+											"pm.test(\"Creacion Exitosa\", function () {\r",
+											"    pm.expect(user.nombre).equals('Test')\r",
+											"    pm.expect(user.apellido).equals('Testingson')\r",
+											"    pm.expect(user.email).equals('test@gmail.com')\r",
+											"    pm.expect(user.rol).equals('MOZO')\r",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "nombre",
+											"value": "Test",
+											"type": "text"
+										},
+										{
+											"key": "apellido",
+											"value": "Testingson",
+											"type": "text"
+										},
+										{
+											"key": "email",
+											"value": "test@gmail.com",
+											"type": "text"
+										},
+										{
+											"key": "password",
+											"value": "12test",
+											"type": "text"
+										},
+										{
+											"key": "rol",
+											"value": "MOZO",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:666/usuarios/",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "666",
+									"path": [
+										"usuarios",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Add without Name",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Pedido Mal Formado\", function () {\r",
+											"    pm.expect(pm.response.code).to.be.oneOf([400]);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "nombre",
+											"value": "Test",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "apellido",
+											"value": "Testingson",
+											"type": "text"
+										},
+										{
+											"key": "email",
+											"value": "test@gmail.com",
+											"type": "text"
+										},
+										{
+											"key": "password",
+											"value": "12test",
+											"type": "text"
+										},
+										{
+											"key": "rol",
+											"value": "MOZO",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:666/usuarios/",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "666",
+									"path": [
+										"usuarios",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Add without Surname",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Pedido Mal Formado\", function () {\r",
+											"    pm.expect(pm.response.code).to.be.oneOf([400]);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "nombre",
+											"value": "Test",
+											"type": "text"
+										},
+										{
+											"key": "apellido",
+											"value": "Testingson",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "email",
+											"value": "test@gmail.com",
+											"type": "text"
+										},
+										{
+											"key": "password",
+											"value": "12test",
+											"type": "text"
+										},
+										{
+											"key": "rol",
+											"value": "MOZO",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:666/usuarios/",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "666",
+									"path": [
+										"usuarios",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Add without Email",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Pedido Mal Formado\", function () {\r",
+											"    pm.expect(pm.response.code).to.be.oneOf([400]);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "nombre",
+											"value": "Test",
+											"type": "text"
+										},
+										{
+											"key": "apellido",
+											"value": "Testingson",
+											"type": "text"
+										},
+										{
+											"key": "email",
+											"value": "test@gmail.com",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "password",
+											"value": "12test",
+											"type": "text"
+										},
+										{
+											"key": "rol",
+											"value": "MOZO",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:666/usuarios/",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "666",
+									"path": [
+										"usuarios",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Add without Password",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Pedido Mal Formado\", function () {\r",
+											"    pm.expect(pm.response.code).to.be.oneOf([400]);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "nombre",
+											"value": "Test",
+											"type": "text"
+										},
+										{
+											"key": "apellido",
+											"value": "Testingson",
+											"type": "text"
+										},
+										{
+											"key": "email",
+											"value": "test@gmail.com",
+											"type": "text"
+										},
+										{
+											"key": "password",
+											"value": "12test",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "rol",
+											"value": "MOZO",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:666/usuarios/",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "666",
+									"path": [
+										"usuarios",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Add without Role",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Pedido Mal Formado\", function () {\r",
+											"    pm.expect(pm.response.code).to.be.oneOf([400]);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "nombre",
+											"value": "Test",
+											"type": "text"
+										},
+										{
+											"key": "apellido",
+											"value": "Testingson",
+											"type": "text"
+										},
+										{
+											"key": "email",
+											"value": "test@gmail.com",
+											"type": "text"
+										},
+										{
+											"key": "password",
+											"value": "12test",
+											"type": "text"
+										},
+										{
+											"key": "rol",
+											"value": "MOZO",
+											"type": "text",
+											"disabled": true
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:666/usuarios/",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "666",
+									"path": [
+										"usuarios",
+										""
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Read",
+					"item": [
+						{
+							"name": "Get All",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Pedido Exitoso\", function () {\r",
+											"    pm.expect(pm.response.code).to.be.oneOf([200, 201, 202]);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": []
+								},
+								"url": {
+									"raw": "http://localhost:666/usuarios/",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "666",
+									"path": [
+										"usuarios",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get One",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Pedido Exitoso\", function () {\r",
+											"    pm.expect(pm.response.code).to.be.oneOf([200, 201, 202]);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": []
+								},
+								"url": {
+									"raw": "http://localhost:666/usuarios/{{LAST_USER_ID}}",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "666",
+									"path": [
+										"usuarios",
+										"{{LAST_USER_ID}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get One with Malformed Id",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Pedido Fallido\", function () {\r",
+											"    pm.expect(pm.response.code).to.be.oneOf([404, 405]);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": []
+								},
+								"url": {
+									"raw": "http://localhost:666/usuarios/asereje",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "666",
+									"path": [
+										"usuarios",
+										"asereje"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Update",
+					"item": [
+						{
+							"name": "Update Name",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Pedido Exitoso\", function () {\r",
+											"    pm.expect(pm.response.code).to.be.oneOf([200, 201, 202]);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Actualizacion Exitosa\", function () {\r",
+											"    pm.expect(pm.response.json().usuario.nombre).equals('Albuquerque')\r",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "nombre",
+											"value": "Albuquerque",
+											"type": "text"
+										},
+										{
+											"key": "apellido",
+											"value": "Testingson",
+											"type": "text"
+										},
+										{
+											"key": "email",
+											"value": "test@gmail.com",
+											"type": "text"
+										},
+										{
+											"key": "password",
+											"value": "12test",
+											"type": "text"
+										},
+										{
+											"key": "rol",
+											"value": "MOZO",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:666/usuarios/{{LAST_USER_ID}}",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "666",
+									"path": [
+										"usuarios",
+										"{{LAST_USER_ID}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update Surname",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Pedido Exitoso\", function () {\r",
+											"    pm.expect(pm.response.code).to.be.oneOf([200, 201, 202]);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Actualizacion Exitosa\", function () {\r",
+											"    pm.expect(pm.response.json().usuario.apellido).equals('Marquez')\r",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "nombre",
+											"value": "Test",
+											"type": "text"
+										},
+										{
+											"key": "apellido",
+											"value": "Marquez",
+											"type": "text"
+										},
+										{
+											"key": "email",
+											"value": "test@gmail.com",
+											"type": "text"
+										},
+										{
+											"key": "password",
+											"value": "12test",
+											"type": "text"
+										},
+										{
+											"key": "rol",
+											"value": "MOZO",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:666/usuarios/{{LAST_USER_ID}}",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "666",
+									"path": [
+										"usuarios",
+										"{{LAST_USER_ID}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update Email",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Pedido Exitoso\", function () {\r",
+											"    pm.expect(pm.response.code).to.be.oneOf([200, 201, 202]);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Actualizacion Exitosa\", function () {\r",
+											"    pm.expect(pm.response.json().usuario.email).equals('rokosbasilisk@gmail.com')\r",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "nombre",
+											"value": "Test",
+											"type": "text"
+										},
+										{
+											"key": "apellido",
+											"value": "Testingson",
+											"type": "text"
+										},
+										{
+											"key": "email",
+											"value": "rokosbasilisk@gmail.com",
+											"type": "text"
+										},
+										{
+											"key": "password",
+											"value": "12test",
+											"type": "text"
+										},
+										{
+											"key": "rol",
+											"value": "MOZO",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:666/usuarios/{{LAST_USER_ID}}",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "666",
+									"path": [
+										"usuarios",
+										"{{LAST_USER_ID}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update Password",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Pedido Exitoso\", function () {\r",
+											"    pm.expect(pm.response.code).to.be.oneOf([200, 201, 202]);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Contraseña Escondida\", function () {\r",
+											"    pm.expect(pm.response.json().usuario.password).is.undefined\r",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "nombre",
+											"value": "Test",
+											"type": "text"
+										},
+										{
+											"key": "apellido",
+											"value": "Testingson",
+											"type": "text"
+										},
+										{
+											"key": "email",
+											"value": "test@gmail.com",
+											"type": "text"
+										},
+										{
+											"key": "password",
+											"value": "asereje",
+											"type": "text"
+										},
+										{
+											"key": "rol",
+											"value": "MOZO",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:666/usuarios/{{LAST_USER_ID}}",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "666",
+									"path": [
+										"usuarios",
+										"{{LAST_USER_ID}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update Role",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Pedido Exitoso\", function () {\r",
+											"    pm.expect(pm.response.code).to.be.oneOf([200, 201, 202]);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Actualizacion Exitosa\", function () {\r",
+											"    pm.expect(pm.response.json().usuario.rol).equals('PASTELERO')\r",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "nombre",
+											"value": "Test",
+											"type": "text"
+										},
+										{
+											"key": "apellido",
+											"value": "Testingson",
+											"type": "text"
+										},
+										{
+											"key": "email",
+											"value": "test@gmail.com",
+											"type": "text"
+										},
+										{
+											"key": "password",
+											"value": "12test",
+											"type": "text"
+										},
+										{
+											"key": "rol",
+											"value": "PASTELERO",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:666/usuarios/{{LAST_USER_ID}}",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "666",
+									"path": [
+										"usuarios",
+										"{{LAST_USER_ID}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update Everything",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Pedido Exitoso\", function () {\r",
+											"    pm.expect(pm.response.code).to.be.oneOf([200, 201, 202]);\r",
+											"});\r",
+											"\r",
+											"const json = pm.response.json()\r",
+											"\r",
+											"const usuario = json.usuario\r",
+											"\r",
+											"pm.test(\"Actualizacion Exitosa\", function () {\r",
+											"    pm.expect(usuario.nombre).equals('Test')\r",
+											"    pm.expect(usuario.apellido).equals('Testingson')\r",
+											"    pm.expect(usuario.email).equals('test@gmail.com')\r",
+											"    pm.expect(usuario.rol).equals('MOZO')\r",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "nombre",
+											"value": "Test",
+											"type": "text"
+										},
+										{
+											"key": "apellido",
+											"value": "Testingson",
+											"type": "text"
+										},
+										{
+											"key": "email",
+											"value": "test@gmail.com",
+											"type": "text"
+										},
+										{
+											"key": "password",
+											"value": "12test",
+											"type": "text"
+										},
+										{
+											"key": "rol",
+											"value": "MOZO",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:666/usuarios/{{LAST_USER_ID}}",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "666",
+									"path": [
+										"usuarios",
+										"{{LAST_USER_ID}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update without Name",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Pedido Fallido\", function () {\r",
+											"    pm.expect(pm.response.code).to.be.oneOf([400]);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "nombre",
+											"value": "Albuquerque",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "apellido",
+											"value": "Testingson",
+											"type": "text"
+										},
+										{
+											"key": "email",
+											"value": "test@gmail.com",
+											"type": "text"
+										},
+										{
+											"key": "password",
+											"value": "12test",
+											"type": "text"
+										},
+										{
+											"key": "rol",
+											"value": "MOZO",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:666/usuarios/{{LAST_USER_ID}}",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "666",
+									"path": [
+										"usuarios",
+										"{{LAST_USER_ID}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update without Surname",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Pedido Fallido\", function () {\r",
+											"    pm.expect(pm.response.code).to.be.oneOf([400]);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "nombre",
+											"value": "Albuquerque",
+											"type": "text"
+										},
+										{
+											"key": "apellido",
+											"value": "Testingson",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "email",
+											"value": "test@gmail.com",
+											"type": "text"
+										},
+										{
+											"key": "password",
+											"value": "12test",
+											"type": "text"
+										},
+										{
+											"key": "rol",
+											"value": "MOZO",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:666/usuarios/{{LAST_USER_ID}}",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "666",
+									"path": [
+										"usuarios",
+										"{{LAST_USER_ID}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update without Email",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Pedido Fallido\", function () {\r",
+											"    pm.expect(pm.response.code).to.be.oneOf([400]);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "nombre",
+											"value": "Albuquerque",
+											"type": "text"
+										},
+										{
+											"key": "apellido",
+											"value": "Testingson",
+											"type": "text"
+										},
+										{
+											"key": "email",
+											"value": "test@gmail.com",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "password",
+											"value": "12test",
+											"type": "text"
+										},
+										{
+											"key": "rol",
+											"value": "MOZO",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:666/usuarios/{{LAST_USER_ID}}",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "666",
+									"path": [
+										"usuarios",
+										"{{LAST_USER_ID}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update without Password",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Pedido Fallido\", function () {\r",
+											"    pm.expect(pm.response.code).to.be.oneOf([400]);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "nombre",
+											"value": "Albuquerque",
+											"type": "text"
+										},
+										{
+											"key": "apellido",
+											"value": "Testingson",
+											"type": "text"
+										},
+										{
+											"key": "email",
+											"value": "test@gmail.com",
+											"type": "text"
+										},
+										{
+											"key": "password",
+											"value": "12test",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "rol",
+											"value": "MOZO",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:666/usuarios/{{LAST_USER_ID}}",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "666",
+									"path": [
+										"usuarios",
+										"{{LAST_USER_ID}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update without Role",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Pedido Fallido\", function () {\r",
+											"    pm.expect(pm.response.code).to.be.oneOf([400]);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "nombre",
+											"value": "Albuquerque",
+											"type": "text"
+										},
+										{
+											"key": "apellido",
+											"value": "Testingson",
+											"type": "text"
+										},
+										{
+											"key": "email",
+											"value": "test@gmail.com",
+											"type": "text"
+										},
+										{
+											"key": "password",
+											"value": "12test",
+											"type": "text"
+										},
+										{
+											"key": "rol",
+											"value": "MOZO",
+											"type": "text",
+											"disabled": true
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:666/usuarios/{{LAST_USER_ID}}",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "666",
+									"path": [
+										"usuarios",
+										"{{LAST_USER_ID}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Delete",
+					"item": [
+						{
+							"name": "Delete",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Pedido Exitoso\", function () {\r",
+											"    pm.expect(pm.response.code).to.be.oneOf([200, 201, 202]);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": []
+								},
+								"url": {
+									"raw": "http://localhost:666/usuarios/{{LAST_USER_ID}}",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "666",
+									"path": [
+										"usuarios",
+										"{{LAST_USER_ID}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete with Malformed ID",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Pedido Fallido\", function () {\r",
+											"    pm.expect(pm.response.code).to.be.oneOf([404]);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": []
+								},
+								"url": {
+									"raw": "http://localhost:666/usuarios/asereje",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "666",
+									"path": [
+										"usuarios",
+										"asereje"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			],
+			"auth": {
+				"type": "basic",
+				"basic": [
+					{
+						"key": "password",
+						"value": "{{JOHN_DOE_PASSWORD}}",
+						"type": "string"
+					},
+					{
+						"key": "username",
+						"value": "{{JOHN_DOE_EMAIL}}",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Products",
+			"item": [
+				{
+					"name": "Create",
+					"item": [
+						{
+							"name": "Add as CSV",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "archivo",
+											"type": "file",
+											"src": []
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:666/productos/csv",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "666",
+									"path": [
+										"productos",
+										"csv"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Add",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Pedido Exitoso\", function () {\r",
+											"    pm.expect(pm.response.code).to.be.oneOf([200, 201, 202]);\r",
+											"});\r",
+											"\r",
+											"const json = pm.response.json()\r",
+											"\r",
+											"const product = json.producto\r",
+											"\r",
+											"const LAST_PRODUCT_ID = product.id;\r",
+											"\r",
+											"if (LAST_PRODUCT_ID !== null && LAST_PRODUCT_ID !== undefined) {\r",
+											"    pm.collectionVariables.set(\"LAST_PRODUCT_ID\", LAST_PRODUCT_ID);\r",
+											"}\r",
+											"\r",
+											"pm.test(\"Creacion Exitosa\", function () {\r",
+											"    pm.expect(product.nombre).equals('Souffle')\r",
+											"    pm.expect(product.precio).equals('150.0')\r",
+											"    pm.expect(product.tiempoEstimado).equals('1200')\r",
+											"    pm.expect(product.tipo).equals('PLATILLO')\r",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "nombre",
+											"value": "Souffle",
+											"type": "text"
+										},
+										{
+											"key": "precio",
+											"value": "150",
+											"type": "text"
+										},
+										{
+											"key": "tiempoEstimado",
+											"value": "1200",
+											"type": "text"
+										},
+										{
+											"key": "tipo",
+											"value": "PLATILLO",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:666/productos",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "666",
+									"path": [
+										"productos"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Add without Name",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Mal Formado\", function () {\r",
+											"    pm.expect(pm.response.code).to.be.oneOf([400]);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "nombre",
+											"value": "Souffle",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "precio",
+											"value": "150.0",
+											"type": "text"
+										},
+										{
+											"key": "tiempoEstimado",
+											"value": "1200",
+											"type": "text"
+										},
+										{
+											"key": "tipo",
+											"value": "PLATILLO",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:666/productos",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "666",
+									"path": [
+										"productos"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Add without Price",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Mal Formado\", function () {\r",
+											"    pm.expect(pm.response.code).to.be.oneOf([400]);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "nombre",
+											"value": "Souffle",
+											"type": "text"
+										},
+										{
+											"key": "precio",
+											"value": "150.0",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "tiempoEstimado",
+											"value": "1200",
+											"type": "text"
+										},
+										{
+											"key": "tipo",
+											"value": "PLATILLO",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:666/productos",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "666",
+									"path": [
+										"productos"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Add without Estimated Time",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Mal Formado\", function () {\r",
+											"    pm.expect(pm.response.code).to.be.oneOf([400]);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "nombre",
+											"value": "Souffle",
+											"type": "text"
+										},
+										{
+											"key": "precio",
+											"value": "150.0",
+											"type": "text"
+										},
+										{
+											"key": "tiempoEstimado",
+											"value": "1200",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "tipo",
+											"value": "PLATILLO",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:666/productos",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "666",
+									"path": [
+										"productos"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Add without Type",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Mal Formado\", function () {\r",
+											"    pm.expect(pm.response.code).to.be.oneOf([400]);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "nombre",
+											"value": "Souffle",
+											"type": "text"
+										},
+										{
+											"key": "precio",
+											"value": "150.0",
+											"type": "text"
+										},
+										{
+											"key": "tiempoEstimado",
+											"value": "1200",
+											"type": "text"
+										},
+										{
+											"key": "tipo",
+											"value": "PLATILLO",
+											"type": "text",
+											"disabled": true
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:666/productos",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "666",
+									"path": [
+										"productos"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Read",
+					"item": [
+						{
+							"name": "Get All",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Pedido Exitoso\", function () {\r",
+											"    pm.expect(pm.response.code).to.be.oneOf([200, 201, 202]);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:666/productos",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "666",
+									"path": [
+										"productos"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get All as CSV",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:666/productos/csv",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "666",
+									"path": [
+										"productos",
+										"csv"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get One",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Pedido Exitoso\", function () {\r",
+											"    pm.expect(pm.response.code).to.be.oneOf([200, 201, 202]);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:666/productos/{{LAST_PRODUCT_ID}}",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "666",
+									"path": [
+										"productos",
+										"{{LAST_PRODUCT_ID}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Update",
+					"item": [
+						{
+							"name": "Update Name",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Pedido Exitoso\", function () {\r",
+											"    pm.expect(pm.response.code).to.be.oneOf([200, 201, 202]);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Actualizacion Exitosa\", function () {\r",
+											"    pm.expect(pm.response.json().producto.nombre).equals('Ragoo')\r",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "nombre",
+											"value": "Ragoo",
+											"type": "text"
+										},
+										{
+											"key": "precio",
+											"value": "150.0",
+											"type": "text"
+										},
+										{
+											"key": "tiempoEstimado",
+											"value": "1200",
+											"type": "text"
+										},
+										{
+											"key": "tipo",
+											"value": "PLATILLO",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:666/productos/{{LAST_PRODUCT_ID}}",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "666",
+									"path": [
+										"productos",
+										"{{LAST_PRODUCT_ID}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update Price",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Pedido Exitoso\", function () {\r",
+											"    pm.expect(pm.response.code).to.be.oneOf([200, 201, 202]);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Actualizacion Exitosa\", function () {\r",
+											"    pm.expect(pm.response.json().producto.precio).equals(300.0)\r",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "nombre",
+											"value": "Souffle",
+											"type": "text"
+										},
+										{
+											"key": "precio",
+											"value": "300.0",
+											"type": "text"
+										},
+										{
+											"key": "tiempoEstimado",
+											"value": "1200",
+											"type": "text"
+										},
+										{
+											"key": "tipo",
+											"value": "PLATILLO",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:666/productos/{{LAST_PRODUCT_ID}}",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "666",
+									"path": [
+										"productos",
+										"{{LAST_PRODUCT_ID}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update Estimated Time",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Pedido Exitoso\", function () {\r",
+											"    pm.expect(pm.response.code).to.be.oneOf([200, 201, 202]);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Actualizacion Exitosa\", function () {\r",
+											"    pm.expect(pm.response.json().producto.tiempoEstimado).equals(900)\r",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "nombre",
+											"value": "Souffle",
+											"type": "text"
+										},
+										{
+											"key": "precio",
+											"value": "150.0",
+											"type": "text"
+										},
+										{
+											"key": "tiempoEstimado",
+											"value": "900",
+											"type": "text"
+										},
+										{
+											"key": "tipo",
+											"value": "PLATILLO",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:666/productos/{{LAST_PRODUCT_ID}}",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "666",
+									"path": [
+										"productos",
+										"{{LAST_PRODUCT_ID}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update Type",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Pedido Exitoso\", function () {\r",
+											"    pm.expect(pm.response.code).to.be.oneOf([200, 201, 202]);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Actualizacion Exitosa\", function () {\r",
+											"    pm.expect(pm.response.json().producto.tipo).equals('POSTRE')\r",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "nombre",
+											"value": "Souffle",
+											"type": "text"
+										},
+										{
+											"key": "precio",
+											"value": "150.0",
+											"type": "text"
+										},
+										{
+											"key": "tiempoEstimado",
+											"value": "1200",
+											"type": "text"
+										},
+										{
+											"key": "tipo",
+											"value": "POSTRE",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:666/productos/{{LAST_PRODUCT_ID}}",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "666",
+									"path": [
+										"productos",
+										"{{LAST_PRODUCT_ID}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update Everything",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Pedido Exitoso\", function () {\r",
+											"    pm.expect(pm.response.code).to.be.oneOf([200, 201, 202]);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Actualizacion Exitosa\", function () {\r",
+											"    pm.expect(pm.response.json().producto.nombre).equals('Ragoo')\r",
+											"    pm.expect(pm.response.json().producto.precio).equals(300.0)\r",
+											"    pm.expect(pm.response.json().producto.tiempoEstimado).equals(900)\r",
+											"    pm.expect(pm.response.json().producto.tipo).equals('POSTRE')\r",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "nombre",
+											"value": "Ragoo",
+											"type": "text"
+										},
+										{
+											"key": "precio",
+											"value": "300.0",
+											"type": "text"
+										},
+										{
+											"key": "tiempoEstimado",
+											"value": "900",
+											"type": "text"
+										},
+										{
+											"key": "tipo",
+											"value": "POSTRE",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:666/productos/{{LAST_PRODUCT_ID}}",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "666",
+									"path": [
+										"productos",
+										"{{LAST_PRODUCT_ID}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update without Name",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Pedido Fallido\", function () {\r",
+											"    pm.expect(pm.response.code).to.be.oneOf([400]);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "nombre",
+											"value": "Souffle",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "precio",
+											"value": "150.0",
+											"type": "text"
+										},
+										{
+											"key": "tiempoEstimado",
+											"value": "1200",
+											"type": "text"
+										},
+										{
+											"key": "tipo",
+											"value": "PLATILLO",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:666/productos/{{LAST_PRODUCT_ID}}",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "666",
+									"path": [
+										"productos",
+										"{{LAST_PRODUCT_ID}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update without Price",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Pedido Fallido\", function () {\r",
+											"    pm.expect(pm.response.code).to.be.oneOf([400]);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "nombre",
+											"value": "Souffle",
+											"type": "text"
+										},
+										{
+											"key": "precio",
+											"value": "150.0",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "tiempoEstimado",
+											"value": "1200",
+											"type": "text"
+										},
+										{
+											"key": "tipo",
+											"value": "PLATILLO",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:666/productos/{{LAST_PRODUCT_ID}}",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "666",
+									"path": [
+										"productos",
+										"{{LAST_PRODUCT_ID}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update without Estimated Time",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Pedido Fallido\", function () {\r",
+											"    pm.expect(pm.response.code).to.be.oneOf([400]);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "nombre",
+											"value": "Souffle",
+											"type": "text"
+										},
+										{
+											"key": "precio",
+											"value": "150.0",
+											"type": "text"
+										},
+										{
+											"key": "tiempoEstimado",
+											"value": "1200",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "tipo",
+											"value": "PLATILLO",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:666/productos/{{LAST_PRODUCT_ID}}",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "666",
+									"path": [
+										"productos",
+										"{{LAST_PRODUCT_ID}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update without Type",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Pedido Fallido\", function () {\r",
+											"    pm.expect(pm.response.code).to.be.oneOf([400]);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "nombre",
+											"value": "Souffle",
+											"type": "text"
+										},
+										{
+											"key": "precio",
+											"value": "150.0",
+											"type": "text"
+										},
+										{
+											"key": "tiempoEstimado",
+											"value": "1200",
+											"type": "text"
+										},
+										{
+											"key": "tipo",
+											"value": "PLATILLO",
+											"type": "text",
+											"disabled": true
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:666/productos/{{LAST_PRODUCT_ID}}",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "666",
+									"path": [
+										"productos",
+										"{{LAST_PRODUCT_ID}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Delete",
+					"item": [
+						{
+							"name": "Delete",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Pedido Exitoso\", function () {\r",
+											"    pm.expect(pm.response.code).to.be.oneOf([200, 201, 202]);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:666/productos/{{LAST_PRODUCT_ID}}",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "666",
+									"path": [
+										"productos",
+										"{{LAST_PRODUCT_ID}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete with Malformed ID",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Pedido Fallido\", function () {\r",
+											"    pm.expect(pm.response.code).to.be.oneOf([404]);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:666/productos/asereje",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "666",
+									"path": [
+										"productos",
+										"asereje"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			],
+			"auth": {
+				"type": "basic",
+				"basic": [
+					{
+						"key": "password",
+						"value": "{{JOHN_DOE_PASSWORD}}",
+						"type": "string"
+					},
+					{
+						"key": "username",
+						"value": "{{JOHN_DOE_EMAIL}}",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Tables",
+			"item": [
+				{
+					"name": "Create",
+					"item": [
+						{
+							"name": "Add",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Pedido Exitoso\", function () {\r",
+											"    pm.expect(pm.response.code).to.be.oneOf([200, 201, 202]);\r",
+											"});\r",
+											"\r",
+											"const json = pm.response.json()\r",
+											"\r",
+											"const LAST_TABLE_ID = json.id;\r",
+											"\r",
+											"if (LAST_TABLE_ID !== null && LAST_TABLE_ID !== undefined) {\r",
+											"    pm.collectionVariables.set(\"LAST_TABLE_ID\", LAST_TABLE_ID);\r",
+											"}\r",
+											"\r",
+											"pm.test(\"Creacion Exitosa\", function () {\r",
+											"    pm.expect(json.estado).equals('CERRADA')\r",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": []
+								},
+								"url": {
+									"raw": "http://localhost:666/mesas/",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "666",
+									"path": [
+										"mesas",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Add with Status",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Pedido Exitoso\", function () {\r",
+											"    pm.expect(pm.response.code).to.be.oneOf([200, 201, 202]);\r",
+											"});\r",
+											"\r",
+											"const json = pm.response.json()\r",
+											"\r",
+											"const LAST_TABLE_ID = json.id;\r",
+											"\r",
+											"if (LAST_TABLE_ID !== null && LAST_TABLE_ID !== undefined) {\r",
+											"    pm.collectionVariables.set(\"LAST_TABLE_ID\", LAST_TABLE_ID);\r",
+											"}\r",
+											"\r",
+											"pm.test(\"Creacion Exitosa\", function () {\r",
+											"    pm.expect(json.estado).equals('ESPERANDO')\r",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "estado",
+											"value": "ESPERANDO",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:666/mesas/",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "666",
+									"path": [
+										"mesas",
+										""
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Read",
+					"item": [
+						{
+							"name": "Get All",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Pedido Exitoso\", function () {\r",
+											"    pm.expect(pm.response.code).to.be.oneOf([200, 201, 202]);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:666/mesas/",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "666",
+									"path": [
+										"mesas",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get One",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Pedido Exitoso\", function () {\r",
+											"    pm.expect(pm.response.code).to.be.oneOf([200, 201, 202]);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:666/mesas/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "666",
+									"path": [
+										"mesas",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get One with Malformed Id",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Pedido Exitoso\", function () {\r",
+											"    pm.expect(pm.response.code).to.be.oneOf([200, 201, 202]);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:666/mesas/",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "666",
+									"path": [
+										"mesas",
+										""
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Delete",
+					"item": [
+						{
+							"name": "Delete",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Pedido Exitoso\", function () {\r",
+											"    pm.expect(pm.response.code).to.be.oneOf([200, 201, 202]);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": []
+								},
+								"url": {
+									"raw": "http://localhost:666/mesas/{{LAST_TABLE_ID}}",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "666",
+									"path": [
+										"mesas",
+										"{{LAST_TABLE_ID}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Correccion Paso a Paso",
+			"item": [
+				{
+					"name": "1ro",
+					"item": [
+						{
+							"name": "Loggearse como Mozo",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Pedido Exitoso\", function () {\r",
+											"    pm.expect(pm.response.code).to.be.oneOf([200, 201, 202]);\r",
+											"});\r",
+											"\r",
+											"const json = pm.response.json()\r",
+											"\r",
+											"const token = json.token\r",
+											"\r",
+											"if (token !== null && token !== undefined) {\r",
+											"    pm.collectionVariables.set(\"JWT\", token);\r",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "email",
+											"value": "{{WAITER_EMAIL}}",
+											"type": "text"
+										},
+										{
+											"key": "password",
+											"value": "{{WAITER_PASSWORD}}",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:666/login",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "666",
+									"path": [
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Tomar Pedido",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Pedido Exitoso\", function () {\r",
+											"    pm.expect(pm.response.code).to.be.oneOf([200, 201, 202]);\r",
+											"});\r",
+											"\r",
+											"const json = pm.response.json()\r",
+											"\r",
+											"const order = json.pedido\r",
+											"\r",
+											"const LAST_ORDER_ID = order.id\r",
+											"\r",
+											"if (LAST_ORDER_ID !== null && LAST_ORDER_ID !== undefined) {\r",
+											"    pm.collectionVariables.set(\"LAST_ORDER_ID\", LAST_ORDER_ID);\r",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"nombreCliente\": \"Juan\",\r\n    \"items\": [\r\n        {\r\n            \"idProducto\": 7\r\n        },\r\n        {\r\n            \"idProducto\": 18\r\n        },\r\n        {\r\n            \"idProducto\": 18\r\n        },\r\n        {\r\n            \"idProducto\": 33\r\n        },\r\n        {\r\n            \"idProducto\": 39\r\n        }\r\n    ]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:666/mesas/{{DEFAULT_TABLE_ID}}/pedir",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "666",
+									"path": [
+										"mesas",
+										"{{DEFAULT_TABLE_ID}}",
+										"pedir"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "2do (Debe Correrse Manualmente)",
+					"item": [
+						{
+							"name": "Asociar Foto",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Pedido Exitoso\", function () {\r",
+											"    pm.expect(pm.response.code).to.be.oneOf([200, 201, 202]);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "imagen",
+											"type": "file",
+											"src": "/C:/Users/Nahuel/Downloads/2e1oPry.jpeg"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:666/mesas/{{DEFAULT_TABLE_ID}}/foto",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "666",
+									"path": [
+										"mesas",
+										"{{DEFAULT_TABLE_ID}}",
+										"foto"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "3ro",
+					"item": [
+						{
+							"name": "Bartender",
+							"item": [
+								{
+									"name": "Loggearse como Bartender",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Pedido Exitoso\", function () {\r",
+													"    pm.expect(pm.response.code).to.be.oneOf([200, 201, 202]);\r",
+													"});\r",
+													"\r",
+													"const json = pm.response.json()\r",
+													"\r",
+													"const token = json.token\r",
+													"\r",
+													"if (token !== null && token !== undefined) {\r",
+													"    pm.collectionVariables.set(\"JWT\", token);\r",
+													"}"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "formdata",
+											"formdata": [
+												{
+													"key": "email",
+													"value": "{{BARTENDER_EMAIL}}",
+													"type": "text"
+												},
+												{
+													"key": "password",
+													"value": "{{BARTENDER_PASSWORD}}",
+													"type": "text"
+												}
+											]
+										},
+										"url": {
+											"raw": "http://localhost:666/login",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "666",
+											"path": [
+												"login"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Pedir Pendientes",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Pedido Exitoso\", function () {\r",
+													"    pm.expect(pm.response.code).to.be.oneOf([200, 201, 202]);\r",
+													"});\r",
+													"\r",
+													"const json = pm.response.json()\r",
+													"\r",
+													"const PRODUCT_ITEM_ID = json.items[0].id\r",
+													"\r",
+													"if (PRODUCT_ITEM_ID !== null && PRODUCT_ITEM_ID !== undefined) {\r",
+													"    pm.collectionVariables.set(\"PRODUCT_ITEM_ID\", PRODUCT_ITEM_ID);\r",
+													"}"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "http://localhost:666/items/pendientes",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "666",
+											"path": [
+												"items",
+												"pendientes"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Preparar Pedido",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Pedido Exitoso\", function () {\r",
+													"    pm.expect(pm.response.code).to.be.oneOf([200, 201, 202]);\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"url": {
+											"raw": "http://localhost:666/items/{{PRODUCT_ITEM_ID}}/preparar",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "666",
+											"path": [
+												"items",
+												"{{PRODUCT_ITEM_ID}}",
+												"preparar"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Cervecero",
+							"item": [
+								{
+									"name": "Loggearse como Cervecero",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Pedido Exitoso\", function () {\r",
+													"    pm.expect(pm.response.code).to.be.oneOf([200, 201, 202]);\r",
+													"});\r",
+													"\r",
+													"const json = pm.response.json()\r",
+													"\r",
+													"const token = json.token\r",
+													"\r",
+													"if (token !== null && token !== undefined) {\r",
+													"    pm.collectionVariables.set(\"JWT\", token);\r",
+													"}"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "formdata",
+											"formdata": [
+												{
+													"key": "email",
+													"value": "{{BREWER_EMAIL}}",
+													"type": "text"
+												},
+												{
+													"key": "password",
+													"value": "{{BREWER_PASSWORD}}",
+													"type": "text"
+												}
+											]
+										},
+										"url": {
+											"raw": "http://localhost:666/login",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "666",
+											"path": [
+												"login"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Pedir Pendientes",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Pedido Exitoso\", function () {\r",
+													"    pm.expect(pm.response.code).to.be.oneOf([200, 201, 202]);\r",
+													"});\r",
+													"\r",
+													"const json = pm.response.json()\r",
+													"\r",
+													"const PRODUCT_ITEM_ID = json.items[0].id\r",
+													"\r",
+													"if (PRODUCT_ITEM_ID !== null && PRODUCT_ITEM_ID !== undefined) {\r",
+													"    pm.collectionVariables.set(\"PRODUCT_ITEM_ID\", PRODUCT_ITEM_ID);\r",
+													"}"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "http://localhost:666/items/pendientes",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "666",
+											"path": [
+												"items",
+												"pendientes"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Preparar Pedido",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Pedido Exitoso\", function () {\r",
+													"    pm.expect(pm.response.code).to.be.oneOf([200, 201, 202]);\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"url": {
+											"raw": "http://localhost:666/items/{{PRODUCT_ITEM_ID}}/preparar",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "666",
+											"path": [
+												"items",
+												"{{PRODUCT_ITEM_ID}}",
+												"preparar"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Chef",
+							"item": [
+								{
+									"name": "Loggearse como Chef",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Pedido Exitoso\", function () {\r",
+													"    pm.expect(pm.response.code).to.be.oneOf([200, 201, 202]);\r",
+													"});\r",
+													"\r",
+													"const json = pm.response.json()\r",
+													"\r",
+													"const token = json.token\r",
+													"\r",
+													"if (token !== null && token !== undefined) {\r",
+													"    pm.collectionVariables.set(\"JWT\", token);\r",
+													"}"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "formdata",
+											"formdata": [
+												{
+													"key": "email",
+													"value": "{{CHEF_EMAIL}}",
+													"type": "text"
+												},
+												{
+													"key": "password",
+													"value": "{{CHEF_PASSWORD}}",
+													"type": "text"
+												}
+											]
+										},
+										"url": {
+											"raw": "http://localhost:666/login",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "666",
+											"path": [
+												"login"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Pedir Pendientes",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Pedido Exitoso\", function () {\r",
+													"    pm.expect(pm.response.code).to.be.oneOf([200, 201, 202]);\r",
+													"});\r",
+													"const json = pm.response.json()\r",
+													"\r",
+													"const FIRST_PRODUCT_ITEM_ID = json.items[0].id\r",
+													"\r",
+													"if (FIRST_PRODUCT_ITEM_ID !== null && FIRST_PRODUCT_ITEM_ID !== undefined) {\r",
+													"    pm.collectionVariables.set(\"FIRST_PRODUCT_ITEM_ID\", FIRST_PRODUCT_ITEM_ID);\r",
+													"}\r",
+													"\r",
+													"const SECOND_PRODUCT_ITEM_ID = json.items[1].id\r",
+													"\r",
+													"if (SECOND_PRODUCT_ITEM_ID !== null && SECOND_PRODUCT_ITEM_ID !== undefined) {\r",
+													"    pm.collectionVariables.set(\"SECOND_PRODUCT_ITEM_ID\", SECOND_PRODUCT_ITEM_ID);\r",
+													"}\r",
+													"\r",
+													"const THIRD_PRODUCT_ITEM_ID = json.items[2].id\r",
+													"\r",
+													"if (THIRD_PRODUCT_ITEM_ID !== null && THIRD_PRODUCT_ITEM_ID !== undefined) {\r",
+													"    pm.collectionVariables.set(\"THIRD_PRODUCT_ITEM_ID\", THIRD_PRODUCT_ITEM_ID);\r",
+													"}"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "http://localhost:666/items/pendientes",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "666",
+											"path": [
+												"items",
+												"pendientes"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Preparar Primer Pedido",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Pedido Exitoso\", function () {\r",
+													"    pm.expect(pm.response.code).to.be.oneOf([200, 201, 202]);\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"url": {
+											"raw": "http://localhost:666/items/{{FIRST_PRODUCT_ITEM_ID}}/preparar",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "666",
+											"path": [
+												"items",
+												"{{FIRST_PRODUCT_ITEM_ID}}",
+												"preparar"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Preparar Segundo Pedido",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Pedido Exitoso\", function () {\r",
+													"    pm.expect(pm.response.code).to.be.oneOf([200, 201, 202]);\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"url": {
+											"raw": "http://localhost:666/items/{{SECOND_PRODUCT_ITEM_ID}}/preparar",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "666",
+											"path": [
+												"items",
+												"{{SECOND_PRODUCT_ITEM_ID}}",
+												"preparar"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Preparar Tercer Pedido",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Pedido Exitoso\", function () {\r",
+													"    pm.expect(pm.response.code).to.be.oneOf([200, 201, 202]);\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"url": {
+											"raw": "http://localhost:666/items/{{THIRD_PRODUCT_ITEM_ID}}/preparar",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "666",
+											"path": [
+												"items",
+												"{{THIRD_PRODUCT_ITEM_ID}}",
+												"preparar"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Pastelero",
+							"item": [
+								{
+									"name": "Loggearse como Pastelero",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Pedido Exitoso\", function () {\r",
+													"    pm.expect(pm.response.code).to.be.oneOf([200, 201, 202]);\r",
+													"});\r",
+													"\r",
+													"const json = pm.response.json()\r",
+													"\r",
+													"const token = json.token\r",
+													"\r",
+													"if (token !== null && token !== undefined) {\r",
+													"    pm.collectionVariables.set(\"JWT\", token);\r",
+													"}"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "formdata",
+											"formdata": [
+												{
+													"key": "email",
+													"value": "{{BAKER_EMAIL}}",
+													"type": "text"
+												},
+												{
+													"key": "password",
+													"value": "{{BAKER_PASSWORD}}",
+													"type": "text"
+												}
+											]
+										},
+										"url": {
+											"raw": "http://localhost:666/login",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "666",
+											"path": [
+												"login"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Pedir Pendientes",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Pedido Exitoso\", function () {\r",
+													"    pm.expect(pm.response.code).to.be.oneOf([200, 201, 202]);\r",
+													"});\r",
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "http://localhost:666/items/pendientes",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "666",
+											"path": [
+												"items",
+												"pendientes"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "4to",
+					"item": [
+						{
+							"name": "Chequear Demora",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Pedido Exitoso\", function () {\r",
+											"    pm.expect(pm.response.code).to.be.oneOf([200, 201, 202]);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": []
+								},
+								"url": {
+									"raw": "http://localhost:666/mesas/{{DEFAULT_TABLE_ID}}/pedidos/{{LAST_ORDER_ID}}",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "666",
+									"path": [
+										"mesas",
+										"{{DEFAULT_TABLE_ID}}",
+										"pedidos",
+										"{{LAST_ORDER_ID}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "5to",
+					"item": [
+						{
+							"name": "Loggearse como Socio",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Pedido Exitoso\", function () {\r",
+											"    pm.expect(pm.response.code).to.be.oneOf([200, 201, 202]);\r",
+											"});\r",
+											"\r",
+											"const json = pm.response.json()\r",
+											"\r",
+											"const token = json.token\r",
+											"\r",
+											"if (token !== null && token !== undefined) {\r",
+											"    pm.collectionVariables.set(\"JWT\", token);\r",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "email",
+											"value": "{{JOHN_DOE_EMAIL}}",
+											"type": "text"
+										},
+										{
+											"key": "password",
+											"value": "{{JOHN_DOE_PASSWORD}}",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:666/login",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "666",
+									"path": [
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Chequear Demora como Socio",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Pedido Exitoso\", function () {\r",
+											"    pm.expect(pm.response.code).to.be.oneOf([200, 201, 202]);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": []
+								},
+								"url": {
+									"raw": "http://localhost:666/pedidos/pendientes",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "666",
+									"path": [
+										"pedidos",
+										"pendientes"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "6to",
+					"item": [
+						{
+							"name": "Bartender",
+							"item": [
+								{
+									"name": "Loggearse como Bartender",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Pedido Exitoso\", function () {\r",
+													"    pm.expect(pm.response.code).to.be.oneOf([200, 201, 202]);\r",
+													"});\r",
+													"\r",
+													"const json = pm.response.json()\r",
+													"\r",
+													"const token = json.token\r",
+													"\r",
+													"if (token !== null && token !== undefined) {\r",
+													"    pm.collectionVariables.set(\"JWT\", token);\r",
+													"}"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "formdata",
+											"formdata": [
+												{
+													"key": "email",
+													"value": "{{BARTENDER_EMAIL}}",
+													"type": "text"
+												},
+												{
+													"key": "password",
+													"value": "{{BARTENDER_PASSWORD}}",
+													"type": "text"
+												}
+											]
+										},
+										"url": {
+											"raw": "http://localhost:666/login",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "666",
+											"path": [
+												"login"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Pedir Pendientes",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Pedido Exitoso\", function () {\r",
+													"    pm.expect(pm.response.code).to.be.oneOf([200, 201, 202]);\r",
+													"});\r",
+													"\r",
+													"const json = pm.response.json()\r",
+													"\r",
+													"const PRODUCT_ITEM_ID = json.items[0].id\r",
+													"\r",
+													"if (PRODUCT_ITEM_ID !== null && PRODUCT_ITEM_ID !== undefined) {\r",
+													"    pm.collectionVariables.set(\"PRODUCT_ITEM_ID\", PRODUCT_ITEM_ID);\r",
+													"}"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "http://localhost:666/items/pendientes",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "666",
+											"path": [
+												"items",
+												"pendientes"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Terminar Pedido",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Pedido Exitoso\", function () {\r",
+													"    pm.expect(pm.response.code).to.be.oneOf([200, 201, 202]);\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"url": {
+											"raw": "http://localhost:666/items/{{PRODUCT_ITEM_ID}}/terminar",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "666",
+											"path": [
+												"items",
+												"{{PRODUCT_ITEM_ID}}",
+												"terminar"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Cervecero",
+							"item": [
+								{
+									"name": "Loggearse como Cervecero",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Pedido Exitoso\", function () {\r",
+													"    pm.expect(pm.response.code).to.be.oneOf([200, 201, 202]);\r",
+													"});\r",
+													"\r",
+													"const json = pm.response.json()\r",
+													"\r",
+													"const token = json.token\r",
+													"\r",
+													"if (token !== null && token !== undefined) {\r",
+													"    pm.collectionVariables.set(\"JWT\", token);\r",
+													"}"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "formdata",
+											"formdata": [
+												{
+													"key": "email",
+													"value": "{{BREWER_EMAIL}}",
+													"type": "text"
+												},
+												{
+													"key": "password",
+													"value": "{{BREWER_PASSWORD}}",
+													"type": "text"
+												}
+											]
+										},
+										"url": {
+											"raw": "http://localhost:666/login",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "666",
+											"path": [
+												"login"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Pedir Pendientes",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Pedido Exitoso\", function () {\r",
+													"    pm.expect(pm.response.code).to.be.oneOf([200, 201, 202]);\r",
+													"});\r",
+													"\r",
+													"const json = pm.response.json()\r",
+													"\r",
+													"const PRODUCT_ITEM_ID = json.items[0].id\r",
+													"\r",
+													"if (PRODUCT_ITEM_ID !== null && PRODUCT_ITEM_ID !== undefined) {\r",
+													"    pm.collectionVariables.set(\"PRODUCT_ITEM_ID\", PRODUCT_ITEM_ID);\r",
+													"}"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "http://localhost:666/items/pendientes",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "666",
+											"path": [
+												"items",
+												"pendientes"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Terminar Pedido",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Pedido Exitoso\", function () {\r",
+													"    pm.expect(pm.response.code).to.be.oneOf([200, 201, 202]);\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"url": {
+											"raw": "http://localhost:666/items/{{PRODUCT_ITEM_ID}}/terminar",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "666",
+											"path": [
+												"items",
+												"{{PRODUCT_ITEM_ID}}",
+												"terminar"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Chef",
+							"item": [
+								{
+									"name": "Loggearse como Chef",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Pedido Exitoso\", function () {\r",
+													"    pm.expect(pm.response.code).to.be.oneOf([200, 201, 202]);\r",
+													"});\r",
+													"\r",
+													"const json = pm.response.json()\r",
+													"\r",
+													"const token = json.token\r",
+													"\r",
+													"if (token !== null && token !== undefined) {\r",
+													"    pm.collectionVariables.set(\"JWT\", token);\r",
+													"}"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "formdata",
+											"formdata": [
+												{
+													"key": "email",
+													"value": "{{CHEF_EMAIL}}",
+													"type": "text"
+												},
+												{
+													"key": "password",
+													"value": "{{CHEF_PASSWORD}}",
+													"type": "text"
+												}
+											]
+										},
+										"url": {
+											"raw": "http://localhost:666/login",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "666",
+											"path": [
+												"login"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Pedir Pendientes",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Pedido Exitoso\", function () {\r",
+													"    pm.expect(pm.response.code).to.be.oneOf([200, 201, 202]);\r",
+													"});\r",
+													"const json = pm.response.json()\r",
+													"\r",
+													"const FIRST_PRODUCT_ITEM_ID = json.items[0].id\r",
+													"\r",
+													"if (FIRST_PRODUCT_ITEM_ID !== null && FIRST_PRODUCT_ITEM_ID !== undefined) {\r",
+													"    pm.collectionVariables.set(\"FIRST_PRODUCT_ITEM_ID\", FIRST_PRODUCT_ITEM_ID);\r",
+													"}\r",
+													"\r",
+													"const SECOND_PRODUCT_ITEM_ID = json.items[1].id\r",
+													"\r",
+													"if (SECOND_PRODUCT_ITEM_ID !== null && SECOND_PRODUCT_ITEM_ID !== undefined) {\r",
+													"    pm.collectionVariables.set(\"SECOND_PRODUCT_ITEM_ID\", SECOND_PRODUCT_ITEM_ID);\r",
+													"}\r",
+													"\r",
+													"const THIRD_PRODUCT_ITEM_ID = json.items[2].id\r",
+													"\r",
+													"if (THIRD_PRODUCT_ITEM_ID !== null && THIRD_PRODUCT_ITEM_ID !== undefined) {\r",
+													"    pm.collectionVariables.set(\"THIRD_PRODUCT_ITEM_ID\", THIRD_PRODUCT_ITEM_ID);\r",
+													"}"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "http://localhost:666/items/pendientes",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "666",
+											"path": [
+												"items",
+												"pendientes"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Terminar Primer Pedido",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Pedido Exitoso\", function () {\r",
+													"    pm.expect(pm.response.code).to.be.oneOf([200, 201, 202]);\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"url": {
+											"raw": "http://localhost:666/items/{{FIRST_PRODUCT_ITEM_ID}}/terminar",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "666",
+											"path": [
+												"items",
+												"{{FIRST_PRODUCT_ITEM_ID}}",
+												"terminar"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Terminar Segundo Pedido",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Pedido Exitoso\", function () {\r",
+													"    pm.expect(pm.response.code).to.be.oneOf([200, 201, 202]);\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"url": {
+											"raw": "http://localhost:666/items/{{SECOND_PRODUCT_ITEM_ID}}/terminar",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "666",
+											"path": [
+												"items",
+												"{{SECOND_PRODUCT_ITEM_ID}}",
+												"terminar"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Terminar Tercer Pedido",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Pedido Exitoso\", function () {\r",
+													"    pm.expect(pm.response.code).to.be.oneOf([200, 201, 202]);\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"url": {
+											"raw": "http://localhost:666/items/{{THIRD_PRODUCT_ITEM_ID}}/terminar",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "666",
+											"path": [
+												"items",
+												"{{THIRD_PRODUCT_ITEM_ID}}",
+												"terminar"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Pastelero",
+							"item": [
+								{
+									"name": "Loggearse como Pastelero",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Pedido Exitoso\", function () {\r",
+													"    pm.expect(pm.response.code).to.be.oneOf([200, 201, 202]);\r",
+													"});\r",
+													"\r",
+													"const json = pm.response.json()\r",
+													"\r",
+													"const token = json.token\r",
+													"\r",
+													"if (token !== null && token !== undefined) {\r",
+													"    pm.collectionVariables.set(\"JWT\", token);\r",
+													"}"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "formdata",
+											"formdata": [
+												{
+													"key": "email",
+													"value": "{{BAKER_EMAIL}}",
+													"type": "text"
+												},
+												{
+													"key": "password",
+													"value": "{{BAKER_PASSWORD}}",
+													"type": "text"
+												}
+											]
+										},
+										"url": {
+											"raw": "http://localhost:666/login",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "666",
+											"path": [
+												"login"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Pedir Pendientes",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Pedido Exitoso\", function () {\r",
+													"    pm.expect(pm.response.code).to.be.oneOf([200, 201, 202]);\r",
+													"});\r",
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "http://localhost:666/items/pendientes",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "666",
+											"path": [
+												"items",
+												"pendientes"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "7mo",
+					"item": [
+						{
+							"name": "Loggearse como Mozo",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Pedido Exitoso\", function () {\r",
+											"    pm.expect(pm.response.code).to.be.oneOf([200, 201, 202]);\r",
+											"});\r",
+											"\r",
+											"const json = pm.response.json()\r",
+											"\r",
+											"const token = json.token\r",
+											"\r",
+											"if (token !== null && token !== undefined) {\r",
+											"    pm.collectionVariables.set(\"JWT\", token);\r",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "email",
+											"value": "{{WAITER_EMAIL}}",
+											"type": "text"
+										},
+										{
+											"key": "password",
+											"value": "{{WAITER_PASSWORD}}",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:666/login",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "666",
+									"path": [
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Chequear Pedidos Listos",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Pedido Exitoso\", function () {\r",
+											"    pm.expect(pm.response.code).to.be.oneOf([200, 201, 202]);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:666/pedidos/listos",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "666",
+									"path": [
+										"pedidos",
+										"listos"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Servir Pedido",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Pedido Exitoso\", function () {\r",
+											"    pm.expect(pm.response.code).to.be.oneOf([200, 201, 202]);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:666/mesas/{{DEFAULT_TABLE_ID}}/servir",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "666",
+									"path": [
+										"mesas",
+										"{{DEFAULT_TABLE_ID}}",
+										"servir"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "8vo",
+					"item": [
+						{
+							"name": "Loggearse como Socio",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Pedido Exitoso\", function () {\r",
+											"    pm.expect(pm.response.code).to.be.oneOf([200, 201, 202]);\r",
+											"});\r",
+											"\r",
+											"const json = pm.response.json()\r",
+											"\r",
+											"const token = json.token\r",
+											"\r",
+											"if (token !== null && token !== undefined) {\r",
+											"    pm.collectionVariables.set(\"JWT\", token);\r",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "email",
+											"value": "{{JOHN_DOE_EMAIL}}",
+											"type": "text"
+										},
+										{
+											"key": "password",
+											"value": "{{JOHN_DOE_PASSWORD}}",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:666/login",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "666",
+									"path": [
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Chequear Mesas",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Pedido Exitoso\", function () {\r",
+											"    pm.expect(pm.response.code).to.be.oneOf([200, 201, 202]);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:666/mesas",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "666",
+									"path": [
+										"mesas"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "9no",
+					"item": [
+						{
+							"name": "Loggearse como Mozo",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Pedido Exitoso\", function () {\r",
+											"    pm.expect(pm.response.code).to.be.oneOf([200, 201, 202]);\r",
+											"});\r",
+											"\r",
+											"const json = pm.response.json()\r",
+											"\r",
+											"const token = json.token\r",
+											"\r",
+											"if (token !== null && token !== undefined) {\r",
+											"    pm.collectionVariables.set(\"JWT\", token);\r",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "email",
+											"value": "{{WAITER_EMAIL}}",
+											"type": "text"
+										},
+										{
+											"key": "password",
+											"value": "{{WAITER_PASSWORD}}",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:666/login",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "666",
+									"path": [
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Cobrar Mesa",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Pedido Exitoso\", function () {\r",
+											"    pm.expect(pm.response.code).to.be.oneOf([200, 201, 202]);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": []
+								},
+								"url": {
+									"raw": "http://localhost:666/mesas/{{DEFAULT_TABLE_ID}}/cobrar",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "666",
+									"path": [
+										"mesas",
+										"{{DEFAULT_TABLE_ID}}",
+										"cobrar"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "10mo",
+					"item": [
+						{
+							"name": "Loggearse como Socio",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Pedido Exitoso\", function () {\r",
+											"    pm.expect(pm.response.code).to.be.oneOf([200, 201, 202]);\r",
+											"});\r",
+											"\r",
+											"const json = pm.response.json()\r",
+											"\r",
+											"const token = json.token\r",
+											"\r",
+											"if (token !== null && token !== undefined) {\r",
+											"    pm.collectionVariables.set(\"JWT\", token);\r",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "email",
+											"value": "{{JOHN_DOE_EMAIL}}",
+											"type": "text"
+										},
+										{
+											"key": "password",
+											"value": "{{JOHN_DOE_PASSWORD}}",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:666/login",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "666",
+									"path": [
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Cerrar Mesa",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Pedido Exitoso\", function () {\r",
+											"    pm.expect(pm.response.code).to.be.oneOf([200, 201, 202]);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": []
+								},
+								"url": {
+									"raw": "http://localhost:666/mesas/{{DEFAULT_TABLE_ID}}/cerrar",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "666",
+									"path": [
+										"mesas",
+										"{{DEFAULT_TABLE_ID}}",
+										"cerrar"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "11vo",
+					"item": [
+						{
+							"name": "Dejar Reseña",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Pedido Exitoso\", function () {\r",
+											"    pm.expect(pm.response.code).to.be.oneOf([200, 201, 202]);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "puntuacionMesa",
+											"value": "5",
+											"type": "text"
+										},
+										{
+											"key": "puntuacionRestaurante",
+											"value": "7",
+											"type": "text"
+										},
+										{
+											"key": "puntuacionCamarero",
+											"value": "9",
+											"type": "text"
+										},
+										{
+											"key": "puntuacionCocinero",
+											"value": "10",
+											"type": "text"
+										},
+										{
+											"key": "comentario",
+											"value": "ta weno",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:666/mesas/{{DEFAULT_TABLE_ID}}/pedidos/{{LAST_ORDER_ID}}/encuesta",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "666",
+									"path": [
+										"mesas",
+										"{{DEFAULT_TABLE_ID}}",
+										"pedidos",
+										"{{LAST_ORDER_ID}}",
+										"encuesta"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "12vo",
+					"item": [
+						{
+							"name": "Chequear Encuestas",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Pedido Exitoso\", function () {\r",
+											"    pm.expect(pm.response.code).to.be.oneOf([200, 201, 202]);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:666/encuestas",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "666",
+									"path": [
+										"encuestas"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "13vo",
+					"item": [
+						{
+							"name": "Chequear Mesa mas Popular",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Pedido Exitoso\", function () {\r",
+											"    pm.expect(pm.response.code).to.be.oneOf([200, 201, 202]);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:666/mesas/popular",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "666",
+									"path": [
+										"mesas",
+										"popular"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{JWT}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "JOHN_DOE_EMAIL",
+			"value": "johndoe@gmail.com",
+			"type": "string"
+		},
+		{
+			"key": "JOHN_DOE_PASSWORD",
+			"value": "123456",
+			"type": "string"
+		},
+		{
+			"key": "DEFAULT_TABLE_ID",
+			"value": "1",
+			"type": "string"
+		},
+		{
+			"key": "WAITER_EMAIL",
+			"value": "miguelperez@yahoo.com",
+			"type": "string"
+		},
+		{
+			"key": "WAITER_PASSWORD",
+			"value": "123456",
+			"type": "string"
+		},
+		{
+			"key": "BAKER_EMAIL",
+			"value": "carlosanchez@gmail.com",
+			"type": "string"
+		},
+		{
+			"key": "BAKER_PASSWORD",
+			"value": "123456",
+			"type": "string"
+		},
+		{
+			"key": "BREWER_EMAIL",
+			"value": "mariagarcia@outlook.com",
+			"type": "string"
+		},
+		{
+			"key": "BREWER_PASSWORD",
+			"value": "123456",
+			"type": "string"
+		},
+		{
+			"key": "BARTENDER_EMAIL",
+			"value": "anaromero@yahoo.com",
+			"type": "string"
+		},
+		{
+			"key": "BARTENDER_PASSWORD",
+			"value": "123456",
+			"type": "string"
+		},
+		{
+			"key": "CHEF_EMAIL",
+			"value": "joserodriguez@gmail.com",
+			"type": "string"
+		},
+		{
+			"key": "CHEF_PASSWORD",
+			"value": "123456",
+			"type": "string"
+		},
+		{
+			"key": "JWT",
+			"value": ""
+		},
+		{
+			"key": "LAST_ORDER_ID",
+			"value": ""
+		},
+		{
+			"key": "PRODUCT_ITEM_ID",
+			"value": ""
+		},
+		{
+			"key": "FIRST_PRODUCT_ITEM_ID",
+			"value": ""
+		},
+		{
+			"key": "SECOND_PRODUCT_ITEM_ID",
+			"value": ""
+		},
+		{
+			"key": "THIRD_PRODUCT_ITEM_ID",
+			"value": ""
+		}
+	]
+}
