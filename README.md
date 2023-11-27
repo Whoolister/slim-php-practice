@@ -13,4 +13,6 @@ php -S localhost:666
 Dentro de la carpeta `resources`, hay un archivo llamado `schema.sql` que contiene la estructura de la base de datos.
 Debemos ejecutarlo en nuestro gestor de base de datos para crear la base de datos y sus tablas, y así poder realizar las consultas.
 
+Tener en mente que debemos crear y/o modificar el archivo `.env` para que coincida con nuestra configuración de base de datos.
+
 ### 2023 - UTN FRA Programación III
